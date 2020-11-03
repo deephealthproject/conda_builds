@@ -1,6 +1,6 @@
 {% set name = "eddl-cpu" %}
-{% set version = "0.6.0" %}
-{% set sha256 = "a13aba429d2ea110fba66d4f756b59aff1f32480ad260f08db8baa0d40ae25be" %}
+{% set version = "0.7.1" %}
+{% set sha256 = "d454dd71b9045ab3cf9b98e415fe871757b3c72eba24bfe6cfe574d5c078e85c" %}
 
 package:
   name: {{ name|lower }}
@@ -21,7 +21,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - eigen >=3.3.7
+    - eigen >=3.3.7,<3.3.8
     - zlib 1.2*
     - protobuf 3.11*
   run:

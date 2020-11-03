@@ -1,6 +1,6 @@
 {% set name = "pyeddl-gpu" %}
-{% set version = "0.8.0" %}
-{% set sha256 = "a6162612c5c9b870c24b583ca1b90ee2a8275d6d301dca4a8107c3790968dfd5" %}
+{% set version = "0.9.0" %}
+{% set sha256 = "e0c7de901a78270d433be8843505179138941100dfa9de35bfb581c4fce8a4e1" %}
 
 package:
   name: {{ name|lower }}
@@ -19,16 +19,16 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - cudatoolkit 10.1*
-    - eddl-gpu ==0.6.0
-    - eigen >=3.3.7
+    - eddl-gpu ==0.7.1
+    - eigen >=3.3.7,<3.3.8
     - numpy
     - pip
-    - pybind11
+    - pybind11 <2.6
     - python {{ py_ver }}
     - setuptools
   run:
     - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
-    - eddl-gpu ==0.6.0
+    - eddl-gpu ==0.7.1
     - numpy
     - python {{ py_ver }}
 
