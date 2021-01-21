@@ -42,8 +42,10 @@ make test-eddl
 ```
 
 
-## Note for EDDL 0.5.4a
+## Note on EDDL version tags
 
-The EDDL recipes for EDDL 0.5.4a change the upstream version from `v0.5.4a` to
-`0.5.4a0`, in order to make it compatible with the Conda versioning scheme
-(i.e., [PEP 440](https://www.python.org/dev/peps/pep-0440/)).
+Conda follows the [PEP 440](https://www.python.org/dev/peps/pep-0440/)
+versioning scheme, which is not followed by some EDDL releases. In this cases,
+the Conda recipe changes the upstream version in order to make it compatible
+with PEP 440. For instance the Conda package for EDDL v0.8.3a has a version
+tag of 0.8.3a0.

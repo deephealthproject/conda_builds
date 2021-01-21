@@ -3,6 +3,8 @@
 mkdir build
 cd build
 cmake -DBUILD_EXAMPLES=OFF \
+      -DBUILD_SHARED_LIBS=ON \
+      -DBUILD_HPC=OFF \
       -DBUILD_TESTS=OFF \
       -DCMAKE_INSTALL_PREFIX=${PREFIX} \
       -DBUILD_PROTOBUF=ON \
