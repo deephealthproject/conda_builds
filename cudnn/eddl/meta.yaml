@@ -1,0 +1,42 @@
+{% set name = "eddl-cudnn" %}
+{% set version = "v0.9.1b" %}
+{% set sha256 = "a486d699036feb893bfd95e60405ddf8d3cd9f3e4eabb61f3e65b1b7e01a1139" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version[1:] }}0
+
+source:
+  fn: {{ name }}-{{ version }}.tar.gz
+  url: https://github.com/deephealthproject/eddl/archive/{{ version }}.tar.gz
+  sha256: {{ sha256 }}
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - make
+    - cmake >=3.17.2
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
+    - cudatoolkit-dev 10.1*
+    - cudnn==8.0.5.39
+    - eigen >=3.3.7,<3.3.8
+    - zlib 1.2*
+    - protobuf 3.11*
+  run:
+    - cudatoolkit >=10.1,<10.2a0
+    - cudnn==8.0.5.39
+    - {{ pin_compatible('eigen', max_pin='x.x') }}
+    - {{ pin_compatible('zlib', max_pin='x.x') }}
+    - {{ pin_compatible('protobuf', max_pin='x.x') }}
+    - wget
+
+about:
+  home: https://github.com/deephealthproject/eddl
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: European Distributed Deep Learning Library
