@@ -7,8 +7,10 @@ To install, run:
 ```
 conda install -c dhealth eddl-cpu  # eddl cpu-only version
 conda install -c dhealth eddl-gpu  # eddl gpu-enabled version
+conda install -c dhealth eddl-cudnn  # eddl cudnn-enabled version
 conda install -c dhealth pyeddl-cpu  # pyeddl cpu-only version
 conda install -c dhealth pyeddl-gpu  # pyeddl gpu-enabled version
+conda install -c dhealth pyeddl-cudnn  # pyeddl cudnn-enabled version
 ```
 
 The gpu-enabled packages support CUDA 10.1 (like Tensorflow).
