@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-runtime
+FROM nvidia/cuda:10.1-cudnn8-runtime
 
 ENV PATH="/opt/conda/bin:${PATH}"
 
@@ -10,7 +10,7 @@ RUN apt-get -y update && apt-get -y install wget && \
     conda update -y conda-build
 
 RUN conda create -y -n test && \
-    conda install -y -n test -c dhealth eddl-gpu && \
+    conda install -y -n test -c conda-forge -c dhealth eddl-cudnn && \
     conda init bash
 
 COPY test_eddl.sh /test.sh

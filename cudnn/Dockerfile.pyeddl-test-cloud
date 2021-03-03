@@ -1,4 +1,4 @@
-FROM nvidia/cuda:10.1-runtime
+FROM nvidia/cuda:10.1-cudnn8-runtime
 
 ENV PATH="/opt/conda/bin:${PATH}"
 
@@ -11,7 +11,7 @@ RUN apt-get -y update && apt-get -y install wget && \
 
 RUN for v in 3.6 3.7 3.8; do \
       conda create -y -n test${v} python=${v} && \
-      conda install -y -n test${v} -c dhealth pyeddl-gpu; \
+      conda install -y -n test${v} -c conda-forge -c dhealth pyeddl-cudnn; \
     done && \
     conda init bash
 

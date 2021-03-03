@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-DEVICE := 1
+DEVICE := 0
 
 eddl-conda: Dockerfile.eddl
 	docker build -t eddl-conda -f Dockerfile.eddl .
