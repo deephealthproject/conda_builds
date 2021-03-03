@@ -1,0 +1,40 @@
+{% set name = "pyeddl-cudnn" %}
+{% set version = "0.13.0" %}
+{% set sha256 = "a03eb0d86b5f1e2077afb1cf3f457485c08ab91950676dd55a1235dc8f248451" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  fn: {{ name }}-{{ version }}.tar.gz
+  url: https://github.com/deephealthproject/pyeddl/archive/{{ version }}.tar.gz
+  sha256: {{ sha256 }}
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+  host:
+    - cudatoolkit 10.1*
+    - eddl-cudnn ==0.9.1b0
+    - eigen >=3.3.7,<3.3.8
+    - numpy
+    - pip
+    - pybind11 <2.6
+    - python {{ py_ver }}
+    - setuptools
+  run:
+    - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
+    - eddl-cudnn ==0.9.1b0
+    - numpy
+    - python {{ py_ver }}
+
+about:
+  home: https://github.com/deephealthproject/pyeddl
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: Python wrapper for the EDDL library
