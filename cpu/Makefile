@@ -7,6 +7,13 @@ eddl-conda-test: Dockerfile.eddl-test eddl-conda
 	${SHELL} make_repo.sh
 	docker build -t eddl-conda-test -f Dockerfile.eddl-test .
 
+ecvl-conda: Dockerfile.ecvl
+	docker build -t ecvl-conda -f Dockerfile.ecvl .
+
+ecvl-conda-test: Dockerfile.ecvl-test ecvl-conda
+	${SHELL} add_ecvl_to_repo.sh
+	docker build -t ecvl-conda-test -f Dockerfile.ecvl-test .
+
 eddl-conda-test-cloud: Dockerfile.eddl-test-cloud
 	docker build -t eddl-conda-test-cloud -f Dockerfile.eddl-test-cloud .
 
@@ -23,6 +30,9 @@ pyeddl-conda-test-cloud: Dockerfile.pyeddl-test-cloud
 
 test-eddl: eddl-conda-test
 	docker run --rm eddl-conda-test bash test.sh
+
+test-ecvl: ecvl-conda-test
+	docker run --rm ecvl-conda-test bash test.sh
 
 test-eddl-cloud: eddl-conda-test-cloud
 	docker run --rm eddl-conda-test-cloud bash test.sh

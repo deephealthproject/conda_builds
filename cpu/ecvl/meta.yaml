@@ -1,0 +1,33 @@
+{% set name = "ecvl-cpu" %}
+{% set version = "v0.3.5" %}
+{% set sha256 = "7c3d6e687c78ff1592af0c83dbb1da0ac71827d2518c0104ebd75a743f10d367" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version[1:] }}
+
+source:
+  fn: {{ name }}-{{ version }}.tar.gz
+  url: https://github.com/deephealthproject/ecvl/archive/{{ version }}.tar.gz
+  sha256: {{ sha256 }}
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - make
+    - cmake
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
+    - opencv >=3.4,<4
+  run:
+    - {{ pin_compatible('opencv', max_pin='x.x') }}
+
+about:
+  home: https://github.com/deephealthproject/ecvl
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: European Computer Vision Library
