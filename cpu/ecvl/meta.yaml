@@ -21,9 +21,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - opencv >=3.4,<4
+    - libopencv >=3.4,<4
   run:
-    - {{ pin_compatible('opencv', max_pin='x.x') }}
+    - {{ pin_compatible('libopencv', max_pin='x.x') }}
 
 about:
   home: https://github.com/deephealthproject/ecvl
