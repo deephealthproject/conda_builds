@@ -6,5 +6,5 @@ RUN conda update -y conda && \
 
 COPY ecvl /ecvl
 
-RUN conda config --set channel_priority strict && \
-    conda build -c conda-forge ecvl
+RUN conda config --append channels conda-forge && \
+    conda build ecvl
