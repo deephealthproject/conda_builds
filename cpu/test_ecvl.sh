@@ -25,5 +25,5 @@ int main() {
     ImWrite("test_resized.jpg", tmp);
 }
 EOF
-x86_64-conda_cos6-linux-gnu-g++ -I/opt/conda/envs/ecvl-test/include -L /opt/conda/envs/ecvl-test/lib example.cpp -o example -std=c++17 -lecvl_core -pthread
+x86_64-conda_cos6-linux-gnu-g++ -I/opt/conda/envs/ecvl-test/include -L /opt/conda/envs/ecvl-test/lib example.cpp -o example -std=c++17 -lecvl_core -ldataset -lyaml-cpp -lstdc++fs -pthread
 ./example

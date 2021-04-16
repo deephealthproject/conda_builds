@@ -22,8 +22,10 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - libopencv >=3.4,<4
+    - yaml-cpp 0.6*
   run:
     - {{ pin_compatible('libopencv', max_pin='x.x') }}
+    - {{ pin_compatible('yaml-cpp', max_pin='x.x') }}
 
 about:
   home: https://github.com/deephealthproject/ecvl
