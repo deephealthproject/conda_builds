@@ -1,0 +1,4 @@
+c_compiler_version:   # [unix]
+  - 7                 # [linux64]
+cxx_compiler_version: # [unix]
+  - 7                 # [linux64]
