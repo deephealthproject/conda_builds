@@ -24,6 +24,9 @@ pyeddl-conda-test: Dockerfile.pyeddl-test pyeddl-conda
 	${SHELL} add_pyeddl_to_repo.sh
 	docker build -t pyeddl-conda-test -f Dockerfile.pyeddl-test .
 
+pyecvl-conda: Dockerfile.pyecvl ecvl-conda-test
+	docker build -t pyecvl-conda -f Dockerfile.pyecvl .
+
 pyeddl-conda-test-cloud: Dockerfile.pyeddl-test-cloud
 	${SHELL} add_pyeddl_to_repo.sh
 	docker build -t pyeddl-conda-test-cloud -f Dockerfile.pyeddl-test-cloud .
