@@ -27,6 +27,10 @@ pyeddl-conda-test: Dockerfile.pyeddl-test pyeddl-conda
 pyecvl-conda: Dockerfile.pyecvl ecvl-conda-test
 	docker build -t pyecvl-conda -f Dockerfile.pyecvl .
 
+pyecvl-conda-test: Dockerfile.pyecvl-test pyecvl-conda
+	${SHELL} add_pyecvl_to_repo.sh
+	docker build -t pyecvl-conda-test -f Dockerfile.pyecvl-test .
+
 pyeddl-conda-test-cloud: Dockerfile.pyeddl-test-cloud
 	${SHELL} add_pyeddl_to_repo.sh
 	docker build -t pyeddl-conda-test-cloud -f Dockerfile.pyeddl-test-cloud .
@@ -42,6 +46,9 @@ test-eddl-cloud: eddl-conda-test-cloud
 
 test-pyeddl: pyeddl-conda-test
 	docker run --rm pyeddl-conda-test bash test.sh
+
+test-pyecvl: pyecvl-conda-test
+	docker run --rm pyecvl-conda-test bash test.sh
 
 test-pyeddl-cloud: pyeddl-conda-test-cloud
 	docker run --rm pyeddl-conda-test-cloud bash test.sh
