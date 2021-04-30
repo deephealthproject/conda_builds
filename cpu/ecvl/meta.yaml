@@ -23,10 +23,12 @@ requirements:
   host:
     - libopencv >=3.4,<4
     - yaml-cpp 0.6*
+    - openslide 3.4*
     - eddl-cpu ==0.9.2b0
   run:
     - {{ pin_compatible('libopencv', max_pin='x.x') }}
     - {{ pin_compatible('yaml-cpp', max_pin='x.x') }}
+    - {{ pin_compatible('openslide', max_pin='x.x') }}
 
 about:
   home: https://github.com/deephealthproject/ecvl
