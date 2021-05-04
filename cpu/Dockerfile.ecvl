@@ -6,6 +6,8 @@ RUN conda update -y conda && \
 
 COPY ecvl /ecvl
 
-RUN conda config --append channels dhealth && \
-    conda config --append channels conda-forge && \
+RUN conda config --add channels dhealth && \
+    conda config --add channels bioconda && \
+    conda config --add channels conda-forge && \
+    conda config --set channel_priority strict && \
     conda build ecvl

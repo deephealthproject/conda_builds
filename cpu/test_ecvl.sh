@@ -5,10 +5,10 @@ set -eo pipefail
 source /opt/conda/etc/profile.d/conda.sh
 conda activate ecvl-test
 conda install -y gxx_linux-64==7.3.0 unzip
-conda install -y xorg-libice xorg-libsm xorg-libx11 xorg-libxext xorg-libxau xorg-libxrender
 echo getting example data
 wget -q https://www.dropbox.com/s/fe3bo0206eklofh/data.zip
 unzip data.zip
+# unzip -d data data/mnist.zip
 cat <<EOF >example.cpp
 #include <iostream>
 #include "ecvl/core.h"
@@ -26,5 +26,5 @@ int main() {
     ImWrite("test_resized.jpg", tmp);
 }
 EOF
-x86_64-conda_cos6-linux-gnu-g++ -I/opt/conda/envs/ecvl-test/include -L /opt/conda/envs/ecvl-test/lib example.cpp -o example -std=c++17 -lecvl_core -ldataset -lyaml-cpp -lopenslide -lstdc++fs -pthread
+x86_64-conda_cos6-linux-gnu-g++ -I/opt/conda/envs/ecvl-test/include -L /opt/conda/envs/ecvl-test/lib example.cpp -o example -std=c++17 -lecvl_core -ldataset -lyaml-cpp -lopenslide -ldcmdata -ldcmimage -ldcmimgle -ldcmjpeg -li2d -lijg8 -lijg12 -lijg16 -loflog -lofstd -lstdc++fs -pthread
 ./example

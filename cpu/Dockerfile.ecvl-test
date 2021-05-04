@@ -9,8 +9,6 @@ COPY dhealth /dhealth
 
 RUN conda index /dhealth/ && \
     conda create -y -n ecvl-test && \
-    conda config --append channels file://dhealth && \
-    conda config --append channels conda-forge && \
-    conda install -y -n ecvl-test ecvl-cpu
+    conda install -y -n ecvl-test -c file://dhealth -c dhealth -c bioconda -c conda-forge ecvl-cpu
 
 COPY test_ecvl.sh /test.sh
