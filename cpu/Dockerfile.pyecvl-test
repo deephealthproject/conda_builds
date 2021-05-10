@@ -8,12 +8,9 @@ RUN conda update -y conda && \
 COPY dhealth /channels/dhealth
 
 RUN conda index /channels/dhealth/ && \
-    for v in 3.6 3.7 3.8; do \
+    for v in 3.7 3.8; do \
       conda create -y -n test${v} python=${v} && \
-      conda config --append channels file://channels/dhealth && \
-      conda config --append channels dhealth && \
-      conda config --append channels conda-forge && \
-      conda install -y -n test${v} pyecvl-cpu; \
+      conda install -y -n test${v} -c file://channels/dhealth -c dhealth -c bioconda -c conda-forge pyecvl-cpu; \
     done
 
 # expects pyecvl tests in "tests"

@@ -3,12 +3,14 @@
 set -eo pipefail
 
 source /opt/conda/etc/profile.d/conda.sh
-conda activate ecvl-test
-conda install -y gxx_linux-64==7.3.0 unzip
+
+apt-get -y update
+apt-get -y install unzip
 echo getting example data
 wget -q https://www.dropbox.com/s/fe3bo0206eklofh/data.zip
 unzip data.zip
 # unzip -d data data/mnist.zip
+
 cat <<EOF >example.cpp
 #include <iostream>
 #include "ecvl/core.h"
@@ -26,5 +28,13 @@ int main() {
     ImWrite("test_resized.jpg", tmp);
 }
 EOF
-x86_64-conda_cos6-linux-gnu-g++ -I/opt/conda/envs/ecvl-test/include -L /opt/conda/envs/ecvl-test/lib example.cpp -o example -std=c++17 -lecvl_core -ldataset -lyaml-cpp -lopenslide -ldcmdata -ldcmimage -ldcmimgle -ldcmjpeg -li2d -lijg8 -lijg12 -lijg16 -loflog -lofstd -lstdc++fs -pthread
-./example
+
+for v in 3.7 3.8; do
+    echo "*** testing ${v} ***"
+    conda activate test${v}
+    conda install -y gxx_linux-64==7.3.0
+    x86_64-conda_cos6-linux-gnu-g++ -I/opt/conda/envs/test${v}/include -L /opt/conda/envs/test${v}/lib example.cpp -o example -std=c++17 -lecvl_core -ldataset -lyaml-cpp -lopenslide -ldcmdata -ldcmimage -ldcmimgle -ldcmjpeg -li2d -lijg8 -lijg12 -lijg16 -loflog -lofstd -lstdc++fs -pthread
+    ./example
+    rm -fv example
+    conda deactivate
+done

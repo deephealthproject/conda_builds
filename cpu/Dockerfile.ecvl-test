@@ -8,7 +8,9 @@ RUN conda update -y conda && \
 COPY dhealth /dhealth
 
 RUN conda index /dhealth/ && \
-    conda create -y -n ecvl-test && \
-    conda install -y -n ecvl-test -c file://dhealth -c dhealth -c bioconda -c conda-forge ecvl-cpu
+    for v in 3.7 3.8; do \
+      conda create -y -n test${v} python=${v} && \
+      conda install -y -n test${v} -c file://dhealth -c dhealth -c bioconda -c conda-forge ecvl-cpu; \
+    done
 
 COPY test_ecvl.sh /test.sh
