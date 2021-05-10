@@ -29,7 +29,7 @@ int main() {
 }
 EOF
 
-for v in 3.7 3.8; do
+for v in 3.6 3.7 3.8; do
     echo "*** testing ${v} ***"
     conda activate test${v}
     conda install -y gxx_linux-64==7.3.0
