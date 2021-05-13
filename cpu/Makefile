@@ -39,7 +39,7 @@ test-eddl: eddl-conda-test
 	docker run --rm eddl-conda-test bash test.sh
 
 test-ecvl: ecvl-conda-test
-	docker run --rm ecvl-conda-test bash test.sh
+	docker run --rm -v ${PWD}:${PWD}:ro ecvl-conda-test bash ${PWD}/test_ecvl.sh
 
 test-eddl-cloud: eddl-conda-test-cloud
 	docker run --rm eddl-conda-test-cloud bash test.sh

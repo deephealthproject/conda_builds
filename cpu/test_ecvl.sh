@@ -2,6 +2,9 @@
 
 set -eo pipefail
 
+wd=$(mktemp -d)
+pushd "${wd}"
+
 source /opt/conda/etc/profile.d/conda.sh
 
 apt-get -y update
@@ -48,3 +51,6 @@ for v in 3.6 3.7 3.8; do
     popd
     conda deactivate
 done
+
+popd
+rm -rf "${wd}"

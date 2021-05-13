@@ -12,5 +12,3 @@ RUN conda index /dhealth/ && \
       conda create -y -n test${v} python=${v} && \
       conda install -y -n test${v} -c file://dhealth -c dhealth -c bioconda -c conda-forge ecvl-cpu; \
     done
-
-COPY test_ecvl.sh /test.sh
