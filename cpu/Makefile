@@ -17,6 +17,9 @@ ecvl-conda-test: Dockerfile.ecvl-test ecvl-conda
 eddl-conda-test-cloud: Dockerfile.eddl-test-cloud
 	docker build -t eddl-conda-test-cloud -f Dockerfile.eddl-test-cloud .
 
+ecvl-conda-test-cloud: Dockerfile.ecvl-test-cloud
+	docker build -t ecvl-conda-test-cloud -f Dockerfile.ecvl-test-cloud .
+
 pyeddl-conda: Dockerfile.pyeddl eddl-conda-test
 	docker build -t pyeddl-conda -f Dockerfile.pyeddl .
 
@@ -43,6 +46,9 @@ test-ecvl: ecvl-conda-test
 
 test-eddl-cloud: eddl-conda-test-cloud
 	docker run --rm eddl-conda-test-cloud bash test.sh
+
+test-ecvl-cloud: ecvl-conda-test-cloud
+	docker run --rm -v ${PWD}:${PWD}:ro ecvl-conda-test-cloud bash ${PWD}/test_ecvl.sh
 
 test-pyeddl: pyeddl-conda-test
 	docker run --rm pyeddl-conda-test bash test.sh
