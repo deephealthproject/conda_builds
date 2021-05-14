@@ -48,7 +48,7 @@ test-pyeddl: pyeddl-conda-test
 	docker run --rm pyeddl-conda-test bash test.sh
 
 test-pyecvl: pyecvl-conda-test
-	docker run --rm pyecvl-conda-test bash test.sh
+	docker run --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test bash ${PWD}/test_pyecvl.sh
 
 test-pyeddl-cloud: pyeddl-conda-test-cloud
 	docker run --rm pyeddl-conda-test-cloud bash test.sh

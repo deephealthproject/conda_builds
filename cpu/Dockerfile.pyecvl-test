@@ -12,7 +12,3 @@ RUN conda index /channels/dhealth/ && \
       conda create -y -n test${v} python=${v} && \
       conda install -y -n test${v} -c file://channels/dhealth -c dhealth -c bioconda -c conda-forge pyecvl-cpu; \
     done
-
-# expects pyecvl tests in "tests"
-COPY tests /tests
-COPY test_pyecvl.sh /test.sh
