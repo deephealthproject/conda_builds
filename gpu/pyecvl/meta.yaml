@@ -1,0 +1,41 @@
+{% set name = "pyecvl-gpu" %}
+{% set version = "0.10.0" %}
+{% set sha256 = "a2b33e9b37b4d5d8922241ab036b8912e50ba473fd593d3fc97c3bda3f70046f" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  fn: {{ name }}-{{ version }}.tar.gz
+  url: https://github.com/deephealthproject/pyecvl/archive/{{ version }}.tar.gz
+  sha256: {{ sha256 }}
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('cxx') }}
+  host:
+    - cudatoolkit 10.1*
+    - ecvl-gpu ==0.3.5
+    - eddl-gpu ==0.9.2b0
+    - numpy
+    - pip
+    - pybind11 <2.6
+    - python {{ py_ver }}
+    - setuptools
+  run:
+    - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
+    - ecvl-gpu ==0.3.5
+    - pyeddl-gpu ==0.14.0
+    - numpy
+    - python {{ py_ver }}
+
+about:
+  home: https://github.com/deephealthproject/pyecvl
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: Python wrapper for the ECVL library

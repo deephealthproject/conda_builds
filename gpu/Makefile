@@ -29,6 +29,13 @@ pyeddl-conda-test-cloud: Dockerfile.pyeddl-test-cloud
 	${SHELL} add_pyeddl_to_repo.sh
 	docker build -t pyeddl-conda-test-cloud -f Dockerfile.pyeddl-test-cloud .
 
+pyecvl-conda: Dockerfile.pyecvl ecvl-conda-test
+	docker build -t pyecvl-conda -f Dockerfile.pyecvl .
+
+pyecvl-conda-test: Dockerfile.pyecvl-test pyecvl-conda
+	${SHELL} add_pyecvl_to_repo.sh
+	docker build -t pyecvl-conda-test -f Dockerfile.pyecvl-test .
+
 test-eddl: eddl-conda-test
 	docker run --gpus "device=${DEVICE}" --rm eddl-conda-test bash test.sh
 
@@ -40,6 +47,9 @@ test-eddl-cloud: eddl-conda-test-cloud
 
 test-pyeddl: pyeddl-conda-test
 	docker run --gpus "device=${DEVICE}" --rm pyeddl-conda-test bash test.sh
+
+test-pyecvl: pyecvl-conda-test
+	docker run --gpus "device=${DEVICE}" --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test bash ${PWD}/test_pyecvl.sh
 
 test-pyeddl-cloud: pyeddl-conda-test-cloud
 	docker run --gpus "device=${DEVICE}" --rm pyeddl-conda-test-cloud bash test.sh
