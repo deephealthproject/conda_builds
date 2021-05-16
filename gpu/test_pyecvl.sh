@@ -23,6 +23,7 @@ echo extracting MNIST example data
 unzip -oq -d examples/data examples/data/mnist.zip
 
 for v in 3.6 3.7 3.8; do
+    echo "*** testing ${v} ***"
     conda activate test${v}
     conda install -y pytest
     pytest tests
