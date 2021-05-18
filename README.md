@@ -45,7 +45,7 @@ conda install -c dhealth -c bioconda -c conda-forge ecvl-cudnn
 ```
 conda install -c dhealth -c bioconda -c conda-forge pyecvl-cpu
 conda install -c dhealth -c bioconda -c conda-forge pyecvl-gpu
-conda install -c dhealth -c bioconda -c conda-forge -c conda-forge pyecvl-cudnn
+conda install -c dhealth -c bioconda -c conda-forge pyecvl-cudnn
 ```
 
 
