@@ -10,7 +10,7 @@ DeepHealth packages come in three flavors:
 * `*-gpu`: GPU-enabled
 * `*-cudnn`: GPU-enabled, with cuDNN support
 
-The gpu-enabled packages support CUDA 10.1 (like Tensorflow).
+The GPU-enabled packages support CUDA 10.1 (like Tensorflow).
 
 Note that ECVL/PyECVL does not actually offer cuDNN support. The `cudnn` tag
 in this case simply means that the package pulls the corresponding
@@ -29,7 +29,7 @@ conda install -c dhealth -c conda-forge eddl-cudnn
 ```
 conda install -c dhealth pyeddl-cpu
 conda install -c dhealth pyeddl-gpu
-conda install -c dhealth pyeddl-cudnn
+conda install -c dhealth -c conda-forge pyeddl-cudnn
 ```
 
 ### [ECVL](https://github.com/deephealthproject/ecvl)
