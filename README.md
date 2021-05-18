@@ -2,18 +2,51 @@
 
 [Conda](https://docs.conda.io/en/latest/) recipes for DeepHealth software.
 
-To install, run:
+## Installation
 
-```
-conda install -c dhealth eddl-cpu  # eddl cpu-only version
-conda install -c dhealth eddl-gpu  # eddl gpu-enabled version
-conda install -c dhealth eddl-cudnn  # eddl cudnn-enabled version
-conda install -c dhealth pyeddl-cpu  # pyeddl cpu-only version
-conda install -c dhealth pyeddl-gpu  # pyeddl gpu-enabled version
-conda install -c dhealth pyeddl-cudnn  # pyeddl cudnn-enabled version
-```
+DeepHealth packages come in three flavors:
+
+* `*-cpu`: CPU-only
+* `*-gpu`: GPU-enabled
+* `*-cudnn`: GPU-enabled, with cuDNN support
 
 The gpu-enabled packages support CUDA 10.1 (like Tensorflow).
+
+Note that ECVL/PyECVL does not actually offer cuDNN support. The `cudnn` tag
+in this case simply means that the package pulls the corresponding
+`eddl-cudnn` and/or `pyeddl-cudnn` dependency.
+
+### [EDDL](https://github.com/deephealthproject/eddl)
+
+```
+conda install -c dhealth eddl-cpu
+conda install -c dhealth eddl-gpu
+conda install -c dhealth -c conda-forge eddl-cudnn
+```
+
+### [PyEDDL](https://github.com/deephealthproject/pyeddl)
+
+```
+conda install -c dhealth pyeddl-cpu
+conda install -c dhealth pyeddl-gpu
+conda install -c dhealth pyeddl-cudnn
+```
+
+### [ECVL](https://github.com/deephealthproject/ecvl)
+
+```
+conda install -c dhealth -c bioconda -c conda-forge ecvl-cpu
+conda install -c dhealth -c bioconda -c conda-forge ecvl-gpu
+conda install -c dhealth -c bioconda -c conda-forge ecvl-cudnn
+```
+
+### [PyECVL](https://github.com/deephealthproject/pyecvl)
+
+```
+conda install -c dhealth -c bioconda -c conda-forge pyecvl-cpu
+conda install -c dhealth -c bioconda -c conda-forge pyecvl-gpu
+conda install -c dhealth -c bioconda -c conda-forge -c conda-forge pyecvl-cudnn
+```
 
 
 ## Building packages
