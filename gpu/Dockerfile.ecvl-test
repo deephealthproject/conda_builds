@@ -1,0 +1,19 @@
+FROM nvidia/cuda:10.1-runtime
+
+ENV PATH="/opt/conda/bin:${PATH}"
+
+RUN apt-get -y update && apt-get -y install wget && \
+    wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
+    bash Miniconda3-latest-Linux-x86_64.sh -b -f -p /opt/conda && \
+    conda update -y conda && \
+    conda install -y conda-build && \
+    conda update -y conda-build
+
+# dhealth/linux-64 must contain the ecvl-gpu conda package
+COPY dhealth /dhealth
+
+RUN conda index /dhealth/ && \
+    for v in 3.6 3.7 3.8; do \
+      conda create -y -n test${v} python=${v} && \
+      conda install -y -n test${v} -c file://dhealth -c dhealth -c bioconda -c conda-forge ecvl-gpu; \
+    done
