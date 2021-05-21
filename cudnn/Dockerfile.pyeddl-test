@@ -18,7 +18,3 @@ RUN conda index /channels/dhealth/ && \
       conda install -y -n test${v} -c conda-forge -c file://channels/dhealth pyeddl-cudnn; \
     done && \
     conda init bash
-
-# expects pyeddl tests in "tests"
-COPY tests /tests
-COPY test_pyeddl.sh /test.sh
