@@ -1,7 +1,5 @@
 .*
 Dockerfile*
 Makefile
-add_ecvl_to_repo.sh
-add_pyecvl_to_repo.sh
-test_ecvl.sh
-test_pyecvl.sh
+add_*
+test_*
