@@ -16,5 +16,3 @@ RUN conda index /channels/dhealth/ && \
     conda create -y -n test && \
     conda install -y -n test -c conda-forge -c file://channels/dhealth eddl-cudnn && \
     conda init bash
-
-COPY test_eddl.sh /test.sh

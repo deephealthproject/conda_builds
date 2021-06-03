@@ -12,5 +12,3 @@ RUN apt-get -y update && apt-get -y install wget && \
 RUN conda create -y -n test && \
     conda install -y -n test -c conda-forge -c dhealth eddl-cudnn && \
     conda init bash
-
-COPY test_eddl.sh /test.sh
