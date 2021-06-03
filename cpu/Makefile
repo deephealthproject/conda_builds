@@ -4,7 +4,7 @@ eddl-conda: Dockerfile.eddl
 	docker build -t eddl-conda -f Dockerfile.eddl .
 
 eddl-conda-test: Dockerfile.eddl-test eddl-conda
-	${SHELL} make_repo.sh
+	${SHELL} add_eddl_to_repo.sh
 	docker build -t eddl-conda-test -f Dockerfile.eddl-test .
 
 ecvl-conda: Dockerfile.ecvl
@@ -41,13 +41,13 @@ pyecvl-conda-test-cloud: Dockerfile.pyecvl-test-cloud
 	docker build -t pyecvl-conda-test-cloud -f Dockerfile.pyecvl-test-cloud .
 
 test-eddl: eddl-conda-test
-	docker run --rm eddl-conda-test bash test.sh
+	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda-test bash ${PWD}/test_eddl.sh
 
 test-ecvl: ecvl-conda-test
 	docker run --rm -v ${PWD}:${PWD}:ro ecvl-conda-test bash ${PWD}/test_ecvl.sh
 
 test-eddl-cloud: eddl-conda-test-cloud
-	docker run --rm eddl-conda-test-cloud bash test.sh
+	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda-test-cloud bash ${PWD}/test_eddl.sh
 
 test-ecvl-cloud: ecvl-conda-test-cloud
 	docker run --rm -v ${PWD}:${PWD}:ro ecvl-conda-test-cloud bash ${PWD}/test_ecvl.sh
