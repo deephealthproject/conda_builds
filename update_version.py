@@ -79,28 +79,31 @@ def main(args):
     packages = (args.package,) if args.package else ALL_PACKAGES
     for p in packages:
         current_version = get_current_version(p)
-        print(f"getting latest version for {p}... ", end="", flush=True)
-        latest_version = get_latest_version(gh, p)
-        print(latest_version)
-        if current_version == latest_version:
-            print(f"package {p}: already at the latest version")
+        if not args.version:
+            print(f"getting latest version for {p}... ", end="", flush=True)
+            args.version = get_latest_version(gh, p)
+            print(args.version)
+        if current_version == args.version:
+            print(f"package {p}: already at version {args.version}")
             continue
-        print(f"package {p}: {current_version} => {latest_version}")
+        print(f"package {p}: {current_version} => {args.version}")
         if args.dry_run:
             continue
-        checksum = get_checksum(p, latest_version)
+        checksum = get_checksum(p, args.version)
         for t in "cpu", "cudnn", "gpu":
             path = Path(t) / p / "meta.yaml"
             print(f"  updating {path}")
-            update_meta(path, latest_version, checksum)
+            update_meta(path, args.version, checksum)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawTextHelpFormatter
     )
-    parser.add_argument("--package", metavar="|".join(ALL_PACKAGES),
+    parser.add_argument("-p", "--package", metavar="|".join(ALL_PACKAGES),
                         choices=ALL_PACKAGES, help="package name")
-    parser.add_argument("--dry-run", action="store_true",
+    parser.add_argument("-v", "--version", metavar="STRING",
+                        help="new version string")
+    parser.add_argument("-n", "--dry-run", action="store_true",
                         help="show what needs to be done, but don't do it")
     main(parser.parse_args())
