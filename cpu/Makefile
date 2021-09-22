@@ -3,19 +3,12 @@ SHELL := /bin/bash
 eddl-conda: Dockerfile.eddl
 	docker build -t eddl-conda -f Dockerfile.eddl .
 
-eddl-conda-test: Dockerfile.eddl-test eddl-conda
-	${SHELL} add_eddl_to_repo.sh
-	docker build -t eddl-conda-test -f Dockerfile.eddl-test .
-
 ecvl-conda: Dockerfile.ecvl
 	docker build -t ecvl-conda -f Dockerfile.ecvl .
 
 ecvl-conda-test: Dockerfile.ecvl-test ecvl-conda
 	${SHELL} add_ecvl_to_repo.sh
 	docker build -t ecvl-conda-test -f Dockerfile.ecvl-test .
-
-eddl-conda-test-cloud: Dockerfile.eddl-test-cloud
-	docker build -t eddl-conda-test-cloud -f Dockerfile.eddl-test-cloud .
 
 ecvl-conda-test-cloud: Dockerfile.ecvl-test-cloud
 	docker build -t ecvl-conda-test-cloud -f Dockerfile.ecvl-test-cloud .
@@ -40,14 +33,14 @@ pyeddl-conda-test-cloud: Dockerfile.pyeddl-test-cloud
 pyecvl-conda-test-cloud: Dockerfile.pyecvl-test-cloud
 	docker build -t pyecvl-conda-test-cloud -f Dockerfile.pyecvl-test-cloud .
 
-test-eddl: eddl-conda-test
-	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda-test bash ${PWD}/test_eddl.sh
+test-eddl: eddl-conda
+	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda bash ${PWD}/test_eddl.sh
 
 test-ecvl: ecvl-conda-test
 	docker run --rm -v ${PWD}:${PWD}:ro ecvl-conda-test bash ${PWD}/test_ecvl.sh
 
-test-eddl-cloud: eddl-conda-test-cloud
-	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda-test-cloud bash ${PWD}/test_eddl.sh
+test-eddl-cloud: eddl-conda
+	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda bash ${PWD}/test_eddl_cloud.sh
 
 test-ecvl-cloud: ecvl-conda-test-cloud
 	docker run --rm -v ${PWD}:${PWD}:ro ecvl-conda-test-cloud bash ${PWD}/test_ecvl.sh
@@ -64,4 +57,10 @@ test-pyeddl-cloud: pyeddl-conda-test-cloud
 test-pyecvl-cloud: pyecvl-conda-test-cloud
 	docker run --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test-cloud bash ${PWD}/test_pyecvl.sh
 
-.PHONY: eddl-conda eddl-conda-test pyeddl-conda pyeddl-conda-test test-eddl test-pyeddl test-eddl-cloud test-pyeddl-cloud
+conda-upload: ../Dockerfile.upload
+	docker build -t conda-upload -f $< .
+
+upload-eddl: eddl-conda conda-upload
+	bash ../upload.sh eddl cpu
+
+.PHONY: eddl-conda pyeddl-conda pyeddl-conda-test test-eddl test-pyeddl test-eddl-cloud test-pyeddl-cloud conda-upload upload-eddl

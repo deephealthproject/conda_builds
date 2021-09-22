@@ -1,0 +1,6 @@
+FROM continuumio/miniconda3
+
+RUN conda update -y conda && \
+    conda install -y conda-build && \
+    conda update -y conda-build && \
+    conda install -y anaconda-client

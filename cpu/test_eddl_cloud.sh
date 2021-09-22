@@ -31,7 +31,7 @@ echo running example
 cp examples/nn/1_mnist/1_mnist_mlp.cpp example.cpp
 conda create -y -n test
 conda activate test
-conda install -y --use-local eddl-cpu gxx_linux-64=8
+conda install -y -c dhealth eddl-cpu gxx_linux-64=8
 x86_64-conda-linux-gnu-g++ -I/opt/conda/envs/test/include -I/opt/conda/envs/test/include/eigen3 -L /opt/conda/envs/test/lib example.cpp -o example -std=c++11 -leddl -pthread
 ./example --testing --cpu
 
