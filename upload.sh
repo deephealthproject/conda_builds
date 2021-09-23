@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 set -euo pipefail
+this="${BASH_SOURCE-$0}"
+this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
 
 die() {
     echo $1 1>&2
@@ -15,5 +17,5 @@ libname=$1
 cstype=$2
 
 rm -rf dhealth
-bash ../get_pkg.sh ${libname} ${cstype}
+bash "${this_dir}/get_pkg.sh" ${libname} ${cstype}
 docker run --rm -i -v ${PWD}:${PWD}:ro conda-upload bash -c "anaconda login --username deephealthproject && find ${PWD}/dhealth -type f -exec anaconda upload -u dhealth {} \;"

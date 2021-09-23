@@ -35,6 +35,7 @@ from github import Github
 
 
 ALL_PACKAGES = "eddl", "pyeddl", "ecvl", "pyecvl"
+ALL_BUILD_TYPES = "cpu", "gpu", "cudnn"
 
 
 def get_current_version(package):
@@ -90,7 +91,8 @@ def main(args):
         if args.dry_run:
             continue
         checksum = get_checksum(p, args.version)
-        for t in "cpu", "cudnn", "gpu":
+        build_types = (args.build_type,) if args.build_type else ALL_BUILD_TYPES
+        for t in build_types:
             path = Path(t) / p / "meta.yaml"
             print(f"  updating {path}")
             update_meta(path, args.version, checksum)
@@ -102,6 +104,8 @@ if __name__ == "__main__":
     )
     parser.add_argument("-p", "--package", metavar="|".join(ALL_PACKAGES),
                         choices=ALL_PACKAGES, help="package name")
+    parser.add_argument("-t", "--build-type", metavar="|".join(ALL_BUILD_TYPES),
+                        choices=ALL_BUILD_TYPES, help="build type")
     parser.add_argument("-v", "--version", metavar="STRING",
                         help="new version string")
     parser.add_argument("-n", "--dry-run", action="store_true",
