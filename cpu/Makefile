@@ -12,9 +12,6 @@ ecvl-conda: Dockerfile.ecvl conda-base
 ecvl-conda-test: Dockerfile.ecvl-test ecvl-conda
 	docker build -t ecvl-conda-cpu-test -t ecvl-conda-test -f $< ..
 
-ecvl-conda-test-cloud: Dockerfile.ecvl-test-cloud
-	docker build -t ecvl-conda-test-cloud -f Dockerfile.ecvl-test-cloud .
-
 pyeddl-conda: Dockerfile.pyeddl eddl-conda-test
 	docker build -t pyeddl-conda -f Dockerfile.pyeddl .
 
