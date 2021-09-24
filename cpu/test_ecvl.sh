@@ -1,18 +1,14 @@
 #!/usr/bin/env bash
 
 set -eo pipefail
-this="${BASH_SOURCE-$0}"
-this_dir=$(cd -P -- "$(dirname -- "${this}")" && pwd -P)
+source /opt/conda/etc/profile.d/conda.sh
+set -u
 
-if [ $1 = "cloud" ]; then
+if [ ${1-} = "cloud" ]; then
     dhealth_args=("-c" "dhealth")
 else
     dhealth_args=("--use-local")
 fi
-libname=$1
-cstype=$2
-
-source /opt/conda/etc/profile.d/conda.sh
 
 examples_dir="/examples"
 

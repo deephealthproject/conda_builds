@@ -1,12 +1,8 @@
-FROM continuumio/miniconda3
-
-RUN conda update -y conda && \
-    conda install -y conda-build && \
-    conda update -y conda-build
-
-# dhealth/linux-64 must contain the eddl-cpu conda package
-COPY dhealth /channels/dhealth
-RUN conda index /channels/dhealth/
+FROM conda-cpu-base
 
 COPY pyeddl /pyeddl
-RUN conda build -c file://channels/dhealth pyeddl
+
+RUN conda config --add channels dhealth && \
+    conda config --add channels conda-forge && \
+    conda config --set channel_priority strict && \
+    conda build pyeddl

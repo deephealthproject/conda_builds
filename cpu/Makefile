@@ -12,12 +12,11 @@ ecvl-conda: Dockerfile.ecvl conda-base
 ecvl-conda-test: Dockerfile.ecvl-test ecvl-conda
 	docker build -t ecvl-conda-cpu-test -t ecvl-conda-test -f $< ..
 
-pyeddl-conda: Dockerfile.pyeddl eddl-conda-test
-	docker build -t pyeddl-conda -f Dockerfile.pyeddl .
+pyeddl-conda: Dockerfile.pyeddl conda-base
+	docker build -t pyeddl-conda-cpu -t pyeddl-conda -f $< .
 
 pyeddl-conda-test: Dockerfile.pyeddl-test pyeddl-conda
-	${SHELL} add_pyeddl_to_repo.sh
-	docker build -t pyeddl-conda-test -f Dockerfile.pyeddl-test .
+	docker build -t pyeddl-conda-test -t pyeddl-conda-cpu-test -f $< ..
 
 pyecvl-conda: Dockerfile.pyecvl ecvl-conda-test
 	docker build -t pyecvl-conda -f Dockerfile.pyecvl .
@@ -25,9 +24,6 @@ pyecvl-conda: Dockerfile.pyecvl ecvl-conda-test
 pyecvl-conda-test: Dockerfile.pyecvl-test pyecvl-conda
 	${SHELL} add_pyecvl_to_repo.sh
 	docker build -t pyecvl-conda-test -f Dockerfile.pyecvl-test .
-
-pyeddl-conda-test-cloud: Dockerfile.pyeddl-test-cloud
-	docker build -t pyeddl-conda-test-cloud -f Dockerfile.pyeddl-test-cloud .
 
 pyecvl-conda-test-cloud: Dockerfile.pyecvl-test-cloud
 	docker build -t pyecvl-conda-test-cloud -f Dockerfile.pyecvl-test-cloud .
@@ -50,8 +46,8 @@ test-pyeddl: pyeddl-conda-test
 test-pyecvl: pyecvl-conda-test
 	docker run --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test bash ${PWD}/test_pyecvl.sh
 
-test-pyeddl-cloud: pyeddl-conda-test-cloud
-	docker run --rm -v ${PWD}:${PWD}:ro pyeddl-conda-test-cloud bash ${PWD}/test_pyeddl.sh
+test-pyeddl-cloud: test_pyeddl.sh pyeddl-conda-test
+	docker run --rm -v ${PWD}:${PWD}:ro pyeddl-conda-test bash ${PWD}/$< cloud
 
 test-pyecvl-cloud: pyecvl-conda-test-cloud
 	docker run --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test-cloud bash ${PWD}/test_pyecvl.sh
@@ -64,5 +60,8 @@ upload-eddl: eddl-conda conda-upload
 
 upload-ecvl: ecvl-conda conda-upload
 	bash ../upload.sh ecvl cpu
+
+upload-pyeddl: pyeddl-conda conda-upload
+	bash ../upload.sh pyeddl cpu
 
 .PHONY: eddl-conda pyeddl-conda pyeddl-conda-test test-eddl test-pyeddl test-eddl-cloud test-pyeddl-cloud conda-upload upload-eddl
