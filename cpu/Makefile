@@ -1,5 +1,7 @@
 SHELL := /bin/bash
 
+.PHONY: conda-base conda-upload ecvl-conda ecvl-conda-test eddl-conda pyecvl-conda pyecvl-conda-test pyeddl-conda pyeddl-conda-test test-ecvl test-ecvl-cloud test-eddl test-eddl-cloud test-pyecvl test-pyecvl-cloud test-pyeddl test-pyeddl-cloud upload-ecvl upload-eddl upload-pyeddl upload-pyecvl
+
 conda-base: ../Dockerfile.cpu-base
 	docker build -t conda-cpu-base -t conda-base -f $< .
 
@@ -18,15 +20,11 @@ pyeddl-conda: Dockerfile.pyeddl conda-base
 pyeddl-conda-test: Dockerfile.pyeddl-test pyeddl-conda
 	docker build -t pyeddl-conda-test -t pyeddl-conda-cpu-test -f $< ..
 
-pyecvl-conda: Dockerfile.pyecvl ecvl-conda-test
-	docker build -t pyecvl-conda -f Dockerfile.pyecvl .
+pyecvl-conda: Dockerfile.pyecvl conda-base
+	docker build -t pyecvl-conda-cpu -t pyecvl-conda -f $< .
 
 pyecvl-conda-test: Dockerfile.pyecvl-test pyecvl-conda
-	${SHELL} add_pyecvl_to_repo.sh
-	docker build -t pyecvl-conda-test -f Dockerfile.pyecvl-test .
-
-pyecvl-conda-test-cloud: Dockerfile.pyecvl-test-cloud
-	docker build -t pyecvl-conda-test-cloud -f Dockerfile.pyecvl-test-cloud .
+	docker build -t pyecvl-conda-test -t pyecvl-conda-cpu-test -f $< ..
 
 test-eddl: eddl-conda
 	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda bash ${PWD}/test_eddl.sh
@@ -40,17 +38,17 @@ test-eddl-cloud: eddl-conda
 test-ecvl-cloud: test_ecvl.sh ecvl-conda-test
 	docker run --rm -v ${PWD}:${PWD}:ro ecvl-conda-test bash ${PWD}/$< cloud
 
-test-pyeddl: pyeddl-conda-test
-	docker run --rm -v ${PWD}:${PWD}:ro pyeddl-conda-test bash ${PWD}/test_pyeddl.sh
+test-pyeddl: test_pyeddl.sh pyeddl-conda-test
+	docker run --rm -v ${PWD}:${PWD}:ro pyeddl-conda-test bash ${PWD}/$<
 
-test-pyecvl: pyecvl-conda-test
-	docker run --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test bash ${PWD}/test_pyecvl.sh
+test-pyecvl: test_pyecvl.sh pyecvl-conda-test
+	docker run --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test bash ${PWD}/$<
 
 test-pyeddl-cloud: test_pyeddl.sh pyeddl-conda-test
 	docker run --rm -v ${PWD}:${PWD}:ro pyeddl-conda-test bash ${PWD}/$< cloud
 
-test-pyecvl-cloud: pyecvl-conda-test-cloud
-	docker run --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test-cloud bash ${PWD}/test_pyecvl.sh
+test-pyecvl-cloud: test_pyecvl.sh pyecvl-conda-test
+	docker run --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test bash ${PWD}/$< cloud
 
 conda-upload: ../Dockerfile.upload
 	docker build -t conda-upload -f $< .
@@ -64,4 +62,5 @@ upload-ecvl: ecvl-conda conda-upload
 upload-pyeddl: pyeddl-conda conda-upload
 	bash ../upload.sh pyeddl cpu
 
-.PHONY: eddl-conda pyeddl-conda pyeddl-conda-test test-eddl test-pyeddl test-eddl-cloud test-pyeddl-cloud conda-upload upload-eddl
+upload-pyecvl: pyecvl-conda conda-upload
+	bash ../upload.sh pyecvl cpu

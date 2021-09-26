@@ -2,7 +2,6 @@
 
 set -eo pipefail
 source /opt/conda/etc/profile.d/conda.sh
-set -u
 
 if [ ${1-} = "cloud" ]; then
     dhealth_args=("-c" "dhealth")
