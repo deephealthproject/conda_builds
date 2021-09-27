@@ -36,10 +36,11 @@ from github import Github
 
 ALL_PACKAGES = "eddl", "pyeddl", "ecvl", "pyecvl"
 ALL_BUILD_TYPES = "cpu", "gpu", "cudnn"
+_LATEST_VERSION = {}
 
 
-def get_current_version(package):
-    path = Path("cpu") / package / "meta.yaml"
+def get_current_version(package, build_type="cpu"):
+    path = Path(build_type) / package / "meta.yaml"
     with open(path, "rt") as f:
         content = f.read()
     return re.findall(r'set version = "([^"]+)"', content)[0]
@@ -50,9 +51,14 @@ def _tag_date(tag):
 
 
 def get_latest_version(gh, package):
-    repo = gh.get_repo(f"deephealthproject/{package}")
-    tags = repo.get_tags()
-    return max(tags, key=_tag_date).name
+    try:
+        rval = _LATEST_VERSION[package]
+    except KeyError:
+        print(f"{package}: getting latest version from GitHub")
+        repo = gh.get_repo(f"deephealthproject/{package}")
+        tags = repo.get_tags()
+        rval = _LATEST_VERSION[package] = max(tags, key=_tag_date).name
+    return rval
 
 
 def get_checksum(package, version):
@@ -78,21 +84,19 @@ def main(args):
     token = os.getenv("GITHUB_API_TOKEN")
     gh = Github(token) if token else Github()
     packages = (args.package,) if args.package else ALL_PACKAGES
+    build_types = (args.build_type,) if args.build_type else ALL_BUILD_TYPES
     for p in packages:
-        current_version = get_current_version(p)
-        if not args.version:
-            print(f"getting latest version for {p}... ", end="", flush=True)
-            args.version = get_latest_version(gh, p)
-            print(args.version)
-        if current_version == args.version:
-            print(f"package {p}: already at version {args.version}")
-            continue
-        print(f"package {p}: {current_version} => {args.version}")
-        if args.dry_run:
-            continue
-        checksum = get_checksum(p, args.version)
-        build_types = (args.build_type,) if args.build_type else ALL_BUILD_TYPES
         for t in build_types:
+            current_version = get_current_version(p, t)
+            if not args.version:
+                args.version = get_latest_version(gh, p)
+            if current_version == args.version:
+                print(f"package {p}: already at version {args.version}")
+                continue
+            print(f"{p}-{t}: {current_version} => {args.version}")
+            if args.dry_run:
+                continue
+            checksum = get_checksum(p, args.version)
             path = Path(t) / p / "meta.yaml"
             print(f"  updating {path}")
             update_meta(path, args.version, checksum)
