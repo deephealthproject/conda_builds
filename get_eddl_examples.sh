@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
 
 set -eo pipefail
-
-wd=$(mktemp -d)
-pushd "${wd}"
-
 source /opt/conda/etc/profile.d/conda.sh
+set -u
+
+die() {
+    echo $1 1>&2
+    exit 1
+}
+
+nargs=1
+if [ $# -ne ${nargs} ]; then
+    die "Usage: $0 CSTYPE (e.g., $0 cpu)"
+fi
+cstype=$1
+
+target="/"
 
 echo getting examples
-eddl_version=$(conda search --json --offline --use-local eddl-cpu | grep -m 1 version | sed -E 's/ *"version": "(.*)"/\1/g')
+mkdir -p "${target}"
+eddl_version=$(conda search --json --offline --use-local eddl-${cstype} | grep -m 1 version | sed -E 's/ *"version": "(.*)"/\1/g')
 upstream_eddl_version=v${eddl_version::-1}
 eddl_url=https://github.com/deephealthproject/eddl/archive/${upstream_eddl_version}.tar.gz
 echo "  ${eddl_url}"
@@ -26,13 +37,3 @@ for url in "${mnist_urls[@]}"; do
     echo "  ${url}"
     wget -q "${url}"
 done
-
-echo running example
-cp examples/nn/1_mnist/1_mnist_mlp.cpp example.cpp
-conda create -y -n test
-conda activate test
-conda install -y -c dhealth eddl-cpu gxx_linux-64=8
-x86_64-conda-linux-gnu-g++ -I/opt/conda/envs/test/include -I/opt/conda/envs/test/include/eigen3 -L /opt/conda/envs/test/lib example.cpp -o example -std=c++11 -leddl -pthread
-./example --testing --cpu
-
-popd

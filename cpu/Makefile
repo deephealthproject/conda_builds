@@ -8,6 +8,9 @@ conda-base: ../Dockerfile.cpu-base
 eddl-conda: Dockerfile.eddl conda-base
 	docker build -t eddl-conda-cpu -t eddl-conda -f $< .
 
+eddl-conda-test: Dockerfile.eddl-test eddl-conda
+	docker build -t eddl-conda-cpu-test -t eddl-conda-test -f $< ..
+
 ecvl-conda: Dockerfile.ecvl conda-base
 	docker build -t ecvl-conda-cpu -t ecvl-conda -f $< .
 
@@ -26,14 +29,14 @@ pyecvl-conda: Dockerfile.pyecvl conda-base
 pyecvl-conda-test: Dockerfile.pyecvl-test pyecvl-conda
 	docker build -t pyecvl-conda-test -t pyecvl-conda-cpu-test -f $< ..
 
-test-eddl: eddl-conda
-	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda bash ${PWD}/test_eddl.sh
+test-eddl: test_eddl.sh eddl-conda-test
+	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda-test bash ${PWD}/$<
 
-test-ecvl: ecvl-conda-test
-	docker run --rm -v ${PWD}:${PWD}:ro ecvl-conda-test bash ${PWD}/test_ecvl.sh
+test-ecvl: test_ecvl.sh ecvl-conda-test
+	docker run --rm -v ${PWD}:${PWD}:ro ecvl-conda-test bash ${PWD}/$<
 
-test-eddl-cloud: eddl-conda
-	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda bash ${PWD}/test_eddl_cloud.sh
+test-eddl-cloud: test_eddl.sh eddl-conda-test
+	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda-test bash ${PWD}/$< cloud
 
 test-ecvl-cloud: test_ecvl.sh ecvl-conda-test
 	docker run --rm -v ${PWD}:${PWD}:ro ecvl-conda-test bash ${PWD}/$< cloud
