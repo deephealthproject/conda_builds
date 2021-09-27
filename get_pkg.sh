@@ -15,7 +15,7 @@ libname=$1
 cstype=$2
 
 pkg=${libname}-${cstype}
-img=${libname}-conda
+img=${libname}-conda-${cstype}
 target="dhealth/linux-64"
 mkdir -p "${target}"
 docker run --rm ${img} bash -c "conda search --json --offline --use-local ${pkg} | grep '\"url\":' | sed -E 's/ *\"url\": \"file:(.*)\",/\1/g'" | while read f; do

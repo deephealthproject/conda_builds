@@ -3,7 +3,7 @@
 set -eo pipefail
 source /opt/conda/etc/profile.d/conda.sh
 
-if [ ${1-} = "cloud" ]; then
+if [ "${1-}" = "cloud" ]; then
     dhealth_args=("-c" "dhealth")
 else
     dhealth_args=("--use-local")

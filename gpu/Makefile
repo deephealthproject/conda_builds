@@ -1,15 +1,29 @@
 SHELL := /bin/bash
 DEVICE := 0
 
-eddl-conda: Dockerfile.eddl
-	docker build -t eddl-conda -f Dockerfile.eddl .
+# base images
+conda-base: ../Dockerfile.gpu-base
+	docker build -t conda-gpu-base -f $< .
+
+conda-upload: ../Dockerfile.upload
+	docker build -t conda-upload -f $< .
+
+# eddl
+eddl-conda: Dockerfile.eddl conda-base
+	docker build -t eddl-conda-gpu -f $< .
 
 eddl-conda-test: Dockerfile.eddl-test eddl-conda
-	${SHELL} add_eddl_to_repo.sh
-	docker build -t eddl-conda-test -f Dockerfile.eddl-test .
+	docker build -t eddl-conda-gpu-test -f $< ..
 
-eddl-conda-test-cloud: Dockerfile.eddl-test-cloud
-	docker build -t eddl-conda-test-cloud -f Dockerfile.eddl-test-cloud .
+test-eddl: test_eddl.sh eddl-conda-test
+	docker run --rm -e NVIDIA_VISIBLE_DEVICES=${DEVICE} -v ${PWD}:${PWD}:ro eddl-conda-gpu-test bash ${PWD}/$<
+
+upload-eddl: eddl-conda conda-upload
+	bash ../upload.sh eddl gpu
+
+test-eddl-cloud: test_eddl.sh eddl-conda-test
+	docker run --rm -e NVIDIA_VISIBLE_DEVICES=${DEVICE} -v ${PWD}:${PWD}:ro eddl-conda-gpu-test bash ${PWD}/$< cloud
+
 
 ecvl-conda: Dockerfile.ecvl
 	docker build -t ecvl-conda -f Dockerfile.ecvl .
@@ -41,14 +55,8 @@ pyecvl-conda-test: Dockerfile.pyecvl-test pyecvl-conda
 pyecvl-conda-test-cloud: Dockerfile.pyecvl-test-cloud
 	docker build -t pyecvl-conda-test-cloud -f Dockerfile.pyecvl-test-cloud .
 
-test-eddl: eddl-conda-test
-	docker run --gpus "device=${DEVICE}" --rm -v ${PWD}:${PWD}:ro eddl-conda-test bash ${PWD}/test_eddl.sh
-
 test-ecvl: ecvl-conda-test
 	docker run --gpus "device=${DEVICE}" --rm -v ${PWD}:${PWD}:ro ecvl-conda-test bash ${PWD}/test_ecvl.sh
-
-test-eddl-cloud: eddl-conda-test-cloud
-	docker run --gpus "device=${DEVICE}" --rm -v ${PWD}:${PWD}:ro eddl-conda-test-cloud bash ${PWD}/test_eddl.sh
 
 test-ecvl-cloud: ecvl-conda-test-cloud
 	docker run --gpus "device=${DEVICE}" --rm -v ${PWD}:${PWD}:ro ecvl-conda-test-cloud bash ${PWD}/test_ecvl.sh
