@@ -76,6 +76,7 @@ def update_meta(path, version, checksum):
         content = f.read()
     content = re.sub(r'set version = "([^"]+)"', rf'set version = "{version}"', content)
     content = re.sub(r'sha256 = "([^"]+)"', rf'sha256 = "{checksum}"', content)
+    content = re.sub(r'number:\s*\d+', r'number: 0', content)
     with open(path, "wt") as f:
         f.write(content)
 
