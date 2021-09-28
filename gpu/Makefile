@@ -40,16 +40,22 @@ upload-ecvl: ecvl-conda conda-upload
 test-ecvl-cloud: test_ecvl.sh ecvl-conda-test
 	docker run --rm -e NVIDIA_VISIBLE_DEVICES=${DEVICE} -v ${PWD}:${PWD}:ro ecvl-conda-gpu-test bash ${PWD}/$< cloud
 
-
-pyeddl-conda: Dockerfile.pyeddl eddl-conda-test
-	docker build -t pyeddl-conda -f Dockerfile.pyeddl .
+# pyeddl
+pyeddl-conda: Dockerfile.pyeddl conda-base
+	docker build -t pyeddl-conda-gpu -f $< .
 
 pyeddl-conda-test: Dockerfile.pyeddl-test pyeddl-conda
-	${SHELL} add_pyeddl_to_repo.sh
-	docker build -t pyeddl-conda-test -f Dockerfile.pyeddl-test .
+	docker build -t pyeddl-conda-gpu-test -f $< ..
 
-pyeddl-conda-test-cloud: Dockerfile.pyeddl-test-cloud
-	docker build -t pyeddl-conda-test-cloud -f Dockerfile.pyeddl-test-cloud .
+test-pyeddl: test_pyeddl.sh pyeddl-conda-test
+	docker run --rm -e NVIDIA_VISIBLE_DEVICES=${DEVICE} -v ${PWD}:${PWD}:ro pyeddl-conda-gpu-test bash ${PWD}/$<
+
+upload-pyeddl: pyeddl-conda conda-upload
+	bash ../upload.sh pyeddl gpu
+
+test-pyeddl-cloud: test_pyeddl.sh pyeddl-conda-test
+	docker run --rm -e NVIDIA_VISIBLE_DEVICES=${DEVICE} -v ${PWD}:${PWD}:ro pyeddl-conda-gpu-test bash ${PWD}/$< cloud
+
 
 pyecvl-conda: Dockerfile.pyecvl ecvl-conda-test
 	docker build -t pyecvl-conda -f Dockerfile.pyecvl .
@@ -61,14 +67,8 @@ pyecvl-conda-test: Dockerfile.pyecvl-test pyecvl-conda
 pyecvl-conda-test-cloud: Dockerfile.pyecvl-test-cloud
 	docker build -t pyecvl-conda-test-cloud -f Dockerfile.pyecvl-test-cloud .
 
-test-pyeddl: pyeddl-conda-test
-	docker run --gpus "device=${DEVICE}" --rm -v ${PWD}:${PWD}:ro pyeddl-conda-test bash ${PWD}/test_pyeddl.sh
-
 test-pyecvl: pyecvl-conda-test
 	docker run --gpus "device=${DEVICE}" --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test bash ${PWD}/test_pyecvl.sh
-
-test-pyeddl-cloud: pyeddl-conda-test-cloud
-	docker run --gpus "device=${DEVICE}" --rm -v ${PWD}:${PWD}:ro pyeddl-conda-test-cloud bash ${PWD}/test_pyeddl.sh
 
 test-pyecvl-cloud: pyecvl-conda-test-cloud
 	docker run --gpus "device=${DEVICE}" --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test-cloud bash ${PWD}/test_pyecvl.sh
