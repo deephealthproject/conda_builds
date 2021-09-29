@@ -1,6 +1,8 @@
 SHELL := /bin/bash
 DEVICE := 0
 
+.PHONY: conda-base conda-upload eddl-conda eddl-conda-test test-eddl upload-eddl test-eddl-cloud ecvl-conda ecvl-conda-test test-ecvl upload-ecvl test-ecvl-cloud pyeddl-conda pyeddl-conda-test test-pyeddl upload-pyeddl test-pyeddl-cloud pyecvl-conda pyecvl-conda-test test-pyecvl upload-pyecvl test-pyecvl-cloud
+
 # base images
 conda-base: ../Dockerfile.gpu-base
 	docker build -t conda-gpu-base -f $< .
@@ -56,21 +58,18 @@ upload-pyeddl: pyeddl-conda conda-upload
 test-pyeddl-cloud: test_pyeddl.sh pyeddl-conda-test
 	docker run --rm -e NVIDIA_VISIBLE_DEVICES=${DEVICE} -v ${PWD}:${PWD}:ro pyeddl-conda-gpu-test bash ${PWD}/$< cloud
 
-
-pyecvl-conda: Dockerfile.pyecvl ecvl-conda-test
-	docker build -t pyecvl-conda -f Dockerfile.pyecvl .
+# pyecvl
+pyecvl-conda: Dockerfile.pyecvl conda-base
+	docker build -t pyecvl-conda-gpu -t pyecvl-conda -f $< .
 
 pyecvl-conda-test: Dockerfile.pyecvl-test pyecvl-conda
-	${SHELL} add_pyecvl_to_repo.sh
-	docker build -t pyecvl-conda-test -f Dockerfile.pyecvl-test .
+	docker build -t pyecvl-conda-test -t pyecvl-conda-gpu-test -f $< ..
 
-pyecvl-conda-test-cloud: Dockerfile.pyecvl-test-cloud
-	docker build -t pyecvl-conda-test-cloud -f Dockerfile.pyecvl-test-cloud .
+test-pyecvl: test_pyecvl.sh pyecvl-conda-test
+	docker run --rm -e NVIDIA_VISIBLE_DEVICES=${DEVICE} -v ${PWD}:${PWD}:ro pyecvl-conda-gpu-test bash ${PWD}/$<
 
-test-pyecvl: pyecvl-conda-test
-	docker run --gpus "device=${DEVICE}" --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test bash ${PWD}/test_pyecvl.sh
+upload-pyecvl: pyecvl-conda conda-upload
+	bash ../upload.sh pyecvl gpu
 
-test-pyecvl-cloud: pyecvl-conda-test-cloud
-	docker run --gpus "device=${DEVICE}" --rm -v ${PWD}:${PWD}:ro pyecvl-conda-test-cloud bash ${PWD}/test_pyecvl.sh
-
-.PHONY: eddl-conda eddl-conda-test pyeddl-conda pyeddl-conda-test test-eddl test-pyeddl test-eddl-cloud test-pyeddl-cloud
+test-pyecvl-cloud: test_pyecvl.sh pyecvl-conda-test
+	docker run --rm -e NVIDIA_VISIBLE_DEVICES=${DEVICE} -v ${PWD}:${PWD}:ro pyecvl-conda-gpu-test bash ${PWD}/$< cloud
