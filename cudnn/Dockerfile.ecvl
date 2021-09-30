@@ -1,8 +1,4 @@
-FROM continuumio/miniconda3
-
-RUN conda update -y conda && \
-    conda install -y conda-build && \
-    conda update -y conda-build
+FROM conda-cudnn-base
 
 COPY ecvl /ecvl
 

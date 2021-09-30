@@ -1,0 +1,3 @@
+FROM conda-gpu-base
+
+ENV CUDNN_VERSION=8.0.5.39
