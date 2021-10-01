@@ -16,37 +16,59 @@ Note that ECVL/PyECVL does not actually offer cuDNN support. The `cudnn` tag
 in this case simply means that the package pulls the corresponding
 `eddl-cudnn` and/or `pyeddl-cudnn` dependency.
 
-### [EDDL](https://github.com/deephealthproject/eddl)
+### Configuring channels
+
+Before installing, run the following configuration commands:
 
 ```
-conda install -c dhealth eddl-cpu
-conda install -c dhealth eddl-gpu
-conda install -c dhealth -c conda-forge eddl-cudnn
+conda config --add channels dhealth
+conda config --add channels bioconda
+conda config --add channels conda-forge
+conda config --set channel_priority strict
 ```
 
-### [PyEDDL](https://github.com/deephealthproject/pyeddl)
+You can omit the `bioconda` channel if you only want to install EDDL/PyEDDL.
+
+
+### Package dependency
+
+The DeepHealth Toolkit consists of two main C++ libraries:
+[EDDL](https://github.com/deephealthproject/eddl) and
+[ECVL](https://github.com/deephealthproject/ecvl). Python bindings are also
+available for both libraries:
+[PyEDDL](https://github.com/deephealthproject/pyeddl) and
+[PyECVL](https://github.com/deephealthproject/pyecvl). The dependency graph
+for the four packages is shown below:
 
 ```
-conda install -c dhealth pyeddl-cpu
-conda install -c dhealth pyeddl-gpu
-conda install -c dhealth -c conda-forge pyeddl-cudnn
+      +--------+
+      | PyECVL |
+      +--------+
+       ^      ^
+       |      |
++------+-+  +-+------+
+|  ECVL  |  | PyEDDL |
++--------+  +--------+
+        ^    ^
+        |    |
+      +-+----+-+
+      |  EDDL  |
+      +--------+
 ```
 
-### [ECVL](https://github.com/deephealthproject/ecvl)
+For instance, if you install PyEDDL, you will also pull EDDL as a dependency,
+while if you install PyECVL you will install all four.
+
+The Conda packages, available from the [dhealth](https://anaconda.org/dhealth)
+channel, are named according to a simple `<library>-<target>` scheme. For
+instance, to install PyEDDL compiled for GPU, run:
 
 ```
-conda install -c dhealth -c bioconda -c conda-forge ecvl-cpu
-conda install -c dhealth -c bioconda -c conda-forge ecvl-gpu
-conda install -c dhealth -c bioconda -c conda-forge ecvl-cudnn
+conda install pyeddl-gpu
 ```
 
-### [PyECVL](https://github.com/deephealthproject/pyecvl)
-
-```
-conda install -c dhealth -c bioconda -c conda-forge pyecvl-cpu
-conda install -c dhealth -c bioconda -c conda-forge pyecvl-gpu
-conda install -c dhealth -c bioconda -c conda-forge pyecvl-cudnn
-```
+Remember to configure channels as described [above](#configuring-channels)
+first.
 
 
 ## Building packages
