@@ -4,7 +4,7 @@
 
 ## Installation
 
-DeepHealth packages come in three flavors:
+[DeepHealth Conda packages](https://anaconda.org/dhealth) come in three flavors:
 
 * `*-cpu`: CPU-only
 * `*-gpu`: GPU-enabled
@@ -18,7 +18,8 @@ in this case simply means that the package pulls the corresponding
 
 ### Configuring channels
 
-Before installing, run the following configuration commands:
+Before installing, run the following configuration commands (you can omit the
+`bioconda` channel if you only want to install EDDL/PyEDDL):
 
 ```
 conda config --add channels dhealth
@@ -27,8 +28,18 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-You can omit the `bioconda` channel if you only want to install EDDL/PyEDDL.
+Make sure you add the channels in the order shown above. Since `--add` adds
+the channel to the beginning of the list, the channels section in your
+configuration file (`conda config --show`) should now look like this:
 
+```
+channel_priority: strict
+channels:
+  - conda-forge
+  - bioconda
+  - dhealth
+  - defaults
+```
 
 ### Package dependency
 
@@ -38,7 +49,7 @@ The DeepHealth Toolkit consists of two main C++ libraries:
 available for both libraries:
 [PyEDDL](https://github.com/deephealthproject/pyeddl) and
 [PyECVL](https://github.com/deephealthproject/pyecvl). The dependency graph
-for the four packages is shown below:
+is shown below:
 
 ```
       +--------+
