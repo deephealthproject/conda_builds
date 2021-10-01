@@ -110,10 +110,8 @@ make test-eddl
 ```
 
 
-## Note on EDDL version tags
+## Note on version tags
 
-Conda follows the [PEP 440](https://www.python.org/dev/peps/pep-0440/)
-versioning scheme, which is not followed by some EDDL releases. In this cases,
-the Conda recipe changes the upstream version in order to make it compatible
-with PEP 440. For instance the Conda package for EDDL v0.8.3a has a version
-tag of 0.8.3a0.
+In some cases, the upstream version tag has been slightly altered to comply
+with the [PEP 440](https://www.python.org/dev/peps/pep-0440/) scheme. For
+instance, the Conda package for EDDL v0.8.3a has a version tag of 0.8.3a0.
