@@ -82,34 +82,6 @@ Remember to configure channels as described [above](#configuring-channels)
 first.
 
 
-## Building packages
-
-The build setup is based on simple Makefiles and Dockerfiles. For instance, to build the eddl-cpu package:
-
-```
-cd cpu
-make eddl-conda
-```
-
-At the end of the build process, the package will be available in the corresponding Docker image. Look for lines like this in the build log:
-
-```
-/opt/conda/conda-bld/linux-64/eddl-cpu-0.7.1-h3fd9d12_0.tar.bz2
-```
-
-Here is an example of how you can get the package from the image:
-
-```
-docker run --rm eddl-conda bash -c "cat /opt/conda/conda-bld/linux-64/eddl-cpu-0.7.1-h3fd9d12_0.tar.bz2" > eddl-cpu-0.7.1-h3fd9d12_0.tar.bz2
-```
-
-The Makefile also includes testing targets. After building the package, you can test it with:
-
-```
-make test-eddl
-```
-
-
 ## Note on version tags
 
 In some cases, the upstream version tag has been slightly altered to comply
