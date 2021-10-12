@@ -1,18 +1,5 @@
-FROM nvidia/cuda:10.1-runtime
+FROM eddl-conda-gpu
 
-ENV PATH="/opt/conda/bin:${PATH}"
+COPY get_eddl_examples.sh /
 
-RUN apt-get -y update && apt-get -y install wget && \
-    wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-    bash Miniconda3-latest-Linux-x86_64.sh -b -f -p /opt/conda && \
-    conda update -y conda && \
-    conda install -y conda-build && \
-    conda update -y conda-build
-
-# dhealth/linux-64 must contain the eddl-gpu conda package
-COPY dhealth /channels/dhealth
-
-RUN conda index /channels/dhealth/ && \
-    conda create -y -n test && \
-    conda install -y -n test -c file://channels/dhealth eddl-gpu && \
-    conda init bash
+RUN bash /get_eddl_examples.sh gpu

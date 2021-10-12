@@ -1,9 +1,7 @@
-FROM continuumio/miniconda3
-
-RUN conda update -y conda && \
-    conda install -y conda-build && \
-    conda update -y conda-build
+FROM conda-cpu-base
 
 COPY eddl /eddl
 
-RUN conda build eddl
+RUN conda config --add channels conda-forge && \
+    conda config --set channel_priority strict && \
+    conda build eddl

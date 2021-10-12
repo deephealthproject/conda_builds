@@ -1,5 +1,4 @@
 .*
 Dockerfile*
 Makefile
-add_*
 test_*

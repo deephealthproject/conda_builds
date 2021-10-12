@@ -1,16 +1,8 @@
-FROM continuumio/miniconda3
-
-RUN conda update -y conda && \
-    conda install -y conda-build && \
-    conda update -y conda-build
-
-# dhealth/linux-64 must contain the ecvl-cudnn conda package
-COPY dhealth /channels/dhealth
-RUN conda index /channels/dhealth/
+FROM conda-cudnn-base
 
 COPY pyecvl /pyecvl
-RUN conda config --append channels file://channels/dhealth && \
-    conda config --add channels dhealth && \
+
+RUN conda config --add channels dhealth && \
     conda config --add channels bioconda && \
     conda config --add channels conda-forge && \
     conda config --set channel_priority strict && \

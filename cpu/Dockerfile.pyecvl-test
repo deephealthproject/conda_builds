@@ -1,14 +1,5 @@
-FROM continuumio/miniconda3
+FROM pyecvl-conda-cpu
 
-RUN conda update -y conda && \
-    conda install -y conda-build && \
-    conda update -y conda-build
+COPY get_pyecvl_examples.sh /
 
-# dhealth/linux-64 must contain the ecvl-cpu and pyecvl-cpu conda packages
-COPY dhealth /channels/dhealth
-
-RUN conda index /channels/dhealth/ && \
-    for v in 3.6 3.7 3.8; do \
-      conda create -y -n test${v} python=${v} && \
-      conda install -y -n test${v} -c file://channels/dhealth -c dhealth -c bioconda -c conda-forge pyecvl-cpu; \
-    done
+RUN bash /get_pyecvl_examples.sh cpu
