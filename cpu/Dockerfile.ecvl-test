@@ -2,4 +2,4 @@ FROM ecvl-conda-cpu
 
 COPY get_ecvl_examples.sh /
 
-RUN bash /get_ecvl_examples.sh
+RUN bash /get_ecvl_examples.sh cpu

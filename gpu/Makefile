@@ -34,7 +34,7 @@ ecvl-conda-test: Dockerfile.ecvl-test ecvl-conda
 	docker build -t ecvl-conda-gpu-test -f $< ..
 
 test-ecvl: test_ecvl.sh ecvl-conda-test
-	docker run --rm -e NVIDIA_VISIBLE_DEVICES=${DEVICE} -v ${PWD}:${PWD}:ro ecvl-conda-gpu-test bash ${PWD}/$
+	docker run --rm -e NVIDIA_VISIBLE_DEVICES=${DEVICE} -v ${PWD}:${PWD}:ro ecvl-conda-gpu-test bash ${PWD}/$<
 
 upload-ecvl: ecvl-conda conda-upload
 	bash ../upload.sh ecvl gpu

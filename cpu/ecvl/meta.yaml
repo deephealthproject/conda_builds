@@ -1,6 +1,6 @@
 {% set name = "ecvl-cpu" %}
-{% set version = "v0.4.0a" %}
-{% set sha256 = "9d684774fd4f3d3345ae3884fadbb9c9c19f038ebe74dc580119c6b5860f8259" %}
+{% set version = "v0.4.1" %}
+{% set sha256 = "11d37fe434e384dd19c75477c05704df3eadbae7f9530bd711272f276ba2273d" %}
 
 package:
   name: {{ name|lower }}
