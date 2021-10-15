@@ -36,9 +36,14 @@ from github import Github
 
 ALL_PACKAGES = "eddl", "pyeddl", "ecvl", "pyecvl"
 ALL_BUILD_TYPES = "cpu", "gpu", "cudnn"
+REQUIRED_BY = {
+    "eddl": ["pyeddl", "ecvl", "pyecvl"],
+    "ecvl": ["pyecvl"],
+    "pyeddl": ["pyecvl"],
+    "pyecvl": []
+}
 _LATEST_VERSION = {}
 _CHECKSUM = {}
-
 
 def get_current_version(package, build_type="cpu"):
     path = Path(build_type) / package / "meta.yaml"
@@ -83,6 +88,18 @@ def update_meta(path, version, checksum):
         f.write(content)
 
 
+def update_meta_deps(path, package, build_type, version):
+    if version.lower().startswith("v"):
+        version = version[1:]
+    name = f"{package}-{build_type}"
+    with open(path, "rt") as f:
+        content = f.read()
+    content = re.sub(rf' {name}\s*==.+$', rf' {name} =={version}', content,
+                     flags=re.MULTILINE)
+    with open(path, "wt") as f:
+        f.write(content)
+
+
 def main(args):
     token = os.getenv("GITHUB_API_TOKEN")
     gh = Github(token) if token else Github()
@@ -100,8 +117,12 @@ def main(args):
                 continue
             checksum = get_checksum(p, version)
             path = Path(t) / p / "meta.yaml"
-            print(f"  updating {path}")
+            print(f"updating {path}")
             update_meta(path, version, checksum)
+            for r in REQUIRED_BY[p]:
+                rpath = Path(t) / r / "meta.yaml"
+                print(f"  updating deps in {rpath}")
+                update_meta_deps(rpath, p, t, version)
 
 
 if __name__ == "__main__":
