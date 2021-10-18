@@ -5,6 +5,7 @@ DEVICE := 0
 
 # base images
 conda-base: ../Dockerfile.cudnn-base
+	docker build -t conda-cpu-base -f ../Dockerfile.cpu-base .
 	docker build -t conda-cudnn-base -f $< .
 
 conda-upload: ../Dockerfile.upload
