@@ -28,6 +28,9 @@ upload-eddl: eddl-conda conda-upload
 test-eddl-cloud: test_eddl.sh eddl-conda-test
 	docker run --rm $(GPU_OPTS) -v ${PWD}:${PWD}:ro eddl-conda-gpu-test bash ${PWD}/$< cloud
 
+clean-eddl:
+	docker rmi eddl-conda-gpu-test eddl-conda-gpu
+
 # ecvl
 ecvl-conda: Dockerfile.ecvl conda-base
 	docker build -t ecvl-conda-gpu -f $< .
@@ -43,6 +46,9 @@ upload-ecvl: ecvl-conda conda-upload
 
 test-ecvl-cloud: test_ecvl.sh ecvl-conda-test
 	docker run --rm $(GPU_OPTS) -v ${PWD}:${PWD}:ro ecvl-conda-gpu-test bash ${PWD}/$< cloud
+
+clean-ecvl:
+	docker rmi ecvl-conda-gpu-test ecvl-conda-gpu
 
 # pyeddl
 pyeddl-conda: Dockerfile.pyeddl conda-base
@@ -60,6 +66,9 @@ upload-pyeddl: pyeddl-conda conda-upload
 test-pyeddl-cloud: test_pyeddl.sh pyeddl-conda-test
 	docker run --rm $(GPU_OPTS) -v ${PWD}:${PWD}:ro pyeddl-conda-gpu-test bash ${PWD}/$< cloud
 
+clean-pyeddl:
+	docker rmi pyeddl-conda-gpu-test pyeddl-conda-gpu
+
 # pyecvl
 pyecvl-conda: Dockerfile.pyecvl conda-base
 	docker build -t pyecvl-conda-gpu -t pyecvl-conda -f $< .
@@ -75,3 +84,6 @@ upload-pyecvl: pyecvl-conda conda-upload
 
 test-pyecvl-cloud: test_pyecvl.sh pyecvl-conda-test
 	docker run --rm $(GPU_OPTS) -v ${PWD}:${PWD}:ro pyecvl-conda-gpu-test bash ${PWD}/$< cloud
+
+clean-pyecvl:
+	docker rmi pyecvl-conda-gpu-test pyecvl-conda-gpu
