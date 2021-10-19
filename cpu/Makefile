@@ -1,6 +1,6 @@
 SHELL := /bin/bash
 
-.PHONY: conda-base conda-upload eddl-conda eddl-conda-test test-eddl upload-eddl test-eddl-cloud ecvl-conda ecvl-conda-test test-ecvl upload-ecvl test-ecvl-cloud pyeddl-conda pyeddl-conda-test test-pyeddl upload-pyeddl test-pyeddl-cloud pyecvl-conda pyecvl-conda-test test-pyecvl upload-pyecvl test-pyecvl-cloud
+.PHONY: conda-base conda-upload eddl-conda eddl-conda-test test-eddl upload-eddl test-eddl-cloud clean-eddl ecvl-conda ecvl-conda-test test-ecvl upload-ecvl test-ecvl-cloud clean-ecvl pyeddl-conda pyeddl-conda-test test-pyeddl upload-pyeddl test-pyeddl-cloud clean-pyeddl pyecvl-conda pyecvl-conda-test test-pyecvl upload-pyecvl test-pyecvl-cloud clean-pyecvl
 
 # base images
 conda-base: ../Dockerfile.cpu-base
@@ -25,6 +25,9 @@ upload-eddl: eddl-conda conda-upload
 test-eddl-cloud: test_eddl.sh eddl-conda-test
 	docker run --rm -v ${PWD}:${PWD}:ro eddl-conda-cpu-test bash ${PWD}/$< cloud
 
+clean-eddl:
+	docker rmi -f eddl-conda-cpu-test eddl-conda-cpu
+
 # ecvl
 ecvl-conda: Dockerfile.ecvl conda-base
 	docker build -t ecvl-conda-cpu -f $< .
@@ -40,6 +43,9 @@ upload-ecvl: ecvl-conda conda-upload
 
 test-ecvl-cloud: test_ecvl.sh ecvl-conda-test
 	docker run --rm -v ${PWD}:${PWD}:ro ecvl-conda-cpu-test bash ${PWD}/$< cloud
+
+clean-ecvl:
+	docker rmi -f ecvl-conda-cpu-test ecvl-conda-cpu
 
 # pyeddl
 pyeddl-conda: Dockerfile.pyeddl conda-base
@@ -57,6 +63,9 @@ upload-pyeddl: pyeddl-conda conda-upload
 test-pyeddl-cloud: test_pyeddl.sh pyeddl-conda-test
 	docker run --rm -v ${PWD}:${PWD}:ro pyeddl-conda-cpu-test bash ${PWD}/$< cloud
 
+clean-pyeddl:
+	docker rmi -f pyeddl-conda-cpu-test pyeddl-conda-cpu
+
 # pyecvl
 pyecvl-conda: Dockerfile.pyecvl conda-base
 	docker build -t pyecvl-conda-cpu -f $< .
@@ -72,3 +81,6 @@ upload-pyecvl: pyecvl-conda conda-upload
 
 test-pyecvl-cloud: test_pyecvl.sh pyecvl-conda-test
 	docker run --rm -v ${PWD}:${PWD}:ro pyecvl-conda-cpu-test bash ${PWD}/$< cloud
+
+clean-pyecvl:
+	docker rmi -f pyecvl-conda-cpu-test pyecvl-conda-cpu
