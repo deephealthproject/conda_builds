@@ -27,17 +27,23 @@ import hashlib
 import os
 import re
 from io import DEFAULT_BUFFER_SIZE
+from packaging.version import parse as vparse
 from pathlib import Path
 
 import requests
-from dateutil.parser import isoparse
 from github import Github
 
 
 ALL_PACKAGES = "eddl", "pyeddl", "ecvl", "pyecvl"
 ALL_BUILD_TYPES = "cpu", "gpu", "cudnn"
+REQUIRED_BY = {
+    "eddl": ["pyeddl", "ecvl", "pyecvl"],
+    "ecvl": ["pyecvl"],
+    "pyeddl": ["pyecvl"],
+    "pyecvl": []
+}
 _LATEST_VERSION = {}
-
+_CHECKSUM = {}
 
 def get_current_version(package, build_type="cpu"):
     path = Path(build_type) / package / "meta.yaml"
@@ -46,29 +52,30 @@ def get_current_version(package, build_type="cpu"):
     return re.findall(r'set version = "([^"]+)"', content)[0]
 
 
-def _tag_date(tag):
-    return isoparse(tag.commit.raw_data["commit"]["committer"]["date"])
-
-
 def get_latest_version(gh, package):
     try:
         rval = _LATEST_VERSION[package]
     except KeyError:
         print(f"{package}: getting latest version from GitHub")
         repo = gh.get_repo(f"deephealthproject/{package}")
-        tags = repo.get_tags()
-        rval = _LATEST_VERSION[package] = max(tags, key=_tag_date).name
+        tags = [_.name for _ in repo.get_tags()]
+        rval = _LATEST_VERSION[package] = max([(vparse(_), _) for _ in tags])[1]
     return rval
 
 
 def get_checksum(package, version):
-    url = f"https://github.com/deephealthproject/{package}/archive/{version}.tar.gz"
-    h = hashlib.sha256()
-    with requests.get(url, stream=True) as r:
-        r.raise_for_status()
-        for chunk in r.iter_content(chunk_size=DEFAULT_BUFFER_SIZE):
-            h.update(chunk)
-    return h.hexdigest()
+    try:
+        rval = _CHECKSUM[(package, version)]
+    except KeyError:
+        print(f"{package} {version}: computing checksum")
+        url = f"https://github.com/deephealthproject/{package}/archive/{version}.tar.gz"
+        h = hashlib.sha256()
+        with requests.get(url, stream=True) as r:
+            r.raise_for_status()
+            for chunk in r.iter_content(chunk_size=DEFAULT_BUFFER_SIZE):
+                h.update(chunk)
+        rval = _CHECKSUM[(package, version)] = h.hexdigest()
+    return rval
 
 
 def update_meta(path, version, checksum):
@@ -81,6 +88,18 @@ def update_meta(path, version, checksum):
         f.write(content)
 
 
+def update_meta_deps(path, package, build_type, version):
+    if version.lower().startswith("v"):
+        version = version[1:]
+    name = f"{package}-{build_type}"
+    with open(path, "rt") as f:
+        content = f.read()
+    content = re.sub(rf' {name}\s*==.+$', rf' {name} =={version}', content,
+                     flags=re.MULTILINE)
+    with open(path, "wt") as f:
+        f.write(content)
+
+
 def main(args):
     token = os.getenv("GITHUB_API_TOKEN")
     gh = Github(token) if token else Github()
@@ -89,18 +108,21 @@ def main(args):
     for p in packages:
         for t in build_types:
             current_version = get_current_version(p, t)
-            if not args.version:
-                args.version = get_latest_version(gh, p)
-            if current_version == args.version:
-                print(f"package {p}: already at version {args.version}")
+            version = args.version or get_latest_version(gh, p)
+            if current_version == version:
+                print(f"package {p}: already at version {version}")
                 continue
-            print(f"{p}-{t}: {current_version} => {args.version}")
+            print(f"{p}-{t}: {current_version} => {version}")
             if args.dry_run:
                 continue
-            checksum = get_checksum(p, args.version)
+            checksum = get_checksum(p, version)
             path = Path(t) / p / "meta.yaml"
-            print(f"  updating {path}")
-            update_meta(path, args.version, checksum)
+            print(f"updating {path}")
+            update_meta(path, version, checksum)
+            for r in REQUIRED_BY[p]:
+                rpath = Path(t) / r / "meta.yaml"
+                print(f"  updating deps in {rpath}")
+                update_meta_deps(rpath, p, t, version)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 {% set name = "ecvl-cudnn" %}
-{% set version = "v0.4.1" %}
-{% set sha256 = "11d37fe434e384dd19c75477c05704df3eadbae7f9530bd711272f276ba2273d" %}
+{% set version = "v0.4.2" %}
+{% set sha256 = "e5a4a0793c13934f1f6e8623f5a59885b79583268a872e81fd5be1b0e42f2016" %}
 
 package:
   name: {{ name|lower }}
@@ -26,7 +26,7 @@ requirements:
     - yaml-cpp ==0.6.3
     - openslide ==3.4.1
     - dcmtk ==3.6.5
-    - eddl-cudnn ==1.0.2a0
+    - eddl-cudnn ==1.0.3b
     - python {{ py_ver }}
   run:
     - cudatoolkit >=10.1,<10.2a0
@@ -34,7 +34,7 @@ requirements:
     - yaml-cpp ==0.6.3
     - openslide ==3.4.1
     - dcmtk ==3.6.5
-    - eddl-cudnn ==1.0.2a0
+    - eddl-cudnn ==1.0.3b
     - python {{ py_ver }}
 
 

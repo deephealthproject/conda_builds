@@ -1,6 +1,6 @@
 {% set name = "eddl-cpu" %}
-{% set version = "v1.0.2a" %}
-{% set sha256 = "70d6067d44cb547e218236e5bb72faf45f602a7b8214f869626ca47f241481a0" %}
+{% set version = "v1.0.3b" %}
+{% set sha256 = "20ca1283ac81d8dd0424d3b849d5daacfae278542b32e5e27e8f91fb4b1286ce" %}
 
 package:
   name: {{ name|lower }}
@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 0
 
 requirements:
   build:
