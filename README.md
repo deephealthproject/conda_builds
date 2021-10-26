@@ -71,15 +71,23 @@ For instance, if you install PyEDDL, you will also pull EDDL as a dependency,
 while if you install PyECVL you will install all four.
 
 The Conda packages, available from the [dhealth](https://anaconda.org/dhealth)
-channel, are named according to a simple `<library>-<target>` scheme. For
-instance, to install PyEDDL compiled for GPU, run:
+channel, are named according to a simple `<library>-<target>` scheme (e.g.,
+`pyeddl-gpu`). Additionally, most of them (all except `eddl`) are compiled for
+a specific Python version. Currently, packages are available for Python 3.6,
+3.7 and 3.8. Which one will be pulled depends on the Python version installed
+in your environment.
+
+### Example: install Python 3.7 and PyECVL compiled for GPU
 
 ```
-conda install pyeddl-gpu
+conda config --add channels dhealth
+conda config --add channels bioconda
+conda config --add channels conda-forge
+conda config --set channel_priority strict
+conda create -y -n dh_toolkit
+conda activate dh_toolkit
+conda install -y python=3.7 pyecvl-gpu
 ```
-
-Remember to configure channels as described [above](#configuring-channels)
-first.
 
 
 ## Note on version tags
