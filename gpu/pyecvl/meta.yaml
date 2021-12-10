@@ -1,6 +1,6 @@
 {% set name = "pyecvl-gpu" %}
-{% set version = "0.12.2" %}
-{% set sha256 = "fee28342eaddc695e837a3d2d5546cf446a87eb710e52f4064c1ee13b6846e3d" %}
+{% set version = "1.0.0" %}
+{% set sha256 = "a091c9f84e5f7fe98942290f84254cb0932bd6aec87d8cc360612cffcd19a222" %}
 
 package:
   name: {{ name|lower }}
@@ -19,7 +19,7 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - cudatoolkit 10.1*
-    - ecvl-gpu ==0.4.2
+    - ecvl-gpu ==1.0.0
     - eddl-gpu ==1.0.3b
     - numpy
     - pip
@@ -28,7 +28,7 @@ requirements:
     - setuptools
   run:
     - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
-    - ecvl-gpu ==0.4.2
+    - ecvl-gpu ==1.0.0
     - pyeddl-gpu ==1.1.0
     - numpy
     - python {{ py_ver }}

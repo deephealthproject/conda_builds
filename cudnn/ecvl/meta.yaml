@@ -1,6 +1,6 @@
 {% set name = "ecvl-cudnn" %}
-{% set version = "v0.4.2" %}
-{% set sha256 = "e5a4a0793c13934f1f6e8623f5a59885b79583268a872e81fd5be1b0e42f2016" %}
+{% set version = "v1.0.0" %}
+{% set sha256 = "55f42273851d648b09ed5c29ecad3cd57b79b2ab7f3d641d35d65ac6b1f8c429" %}
 
 package:
   name: {{ name|lower }}
