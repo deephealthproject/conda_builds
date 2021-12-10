@@ -19,20 +19,36 @@ cstype=$1
 
 pushd "${this_dir}/${cstype}"
 
-make test-eddl
-make upload-eddl
-make test-eddl-cloud
+if [ -z ${SKIP_EDDL:-} ]; then
+    make test-eddl
+    make upload-eddl
+    make test-eddl-cloud
+else
+    echo "skipping eddl"
+fi
 
-make test-ecvl
-make upload-ecvl
-make test-ecvl-cloud
+if [ -z ${SKIP_ECVL:-} ]; then
+    make test-ecvl
+    make upload-ecvl
+    make test-ecvl-cloud
+else
+    echo "skipping ecvl"
+fi
 
-make test-pyeddl
-make upload-pyeddl
-make test-pyeddl-cloud
+if [ -z ${SKIP_PYEDDL:-} ]; then
+    make test-pyeddl
+    make upload-pyeddl
+    make test-pyeddl-cloud
+else
+    echo "skipping pyeddl"
+fi
 
-make test-pyecvl
-make upload-pyecvl
-make test-pyecvl-cloud
+if [ -z ${SKIP_PYECVL:-} ]; then
+    make test-pyecvl
+    make upload-pyecvl
+    make test-pyecvl-cloud
+else
+    echo "skipping pyecvl"
+fi
 
 popd
