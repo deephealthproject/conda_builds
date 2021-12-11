@@ -28,6 +28,7 @@ requirements:
     - dcmtk ==3.6.5
     - eddl-cudnn ==1.0.3b
     - python {{ py_ver }}
+    - libnsl
   run:
     - cudatoolkit >=10.1,<10.2a0
     - py-opencv <4
