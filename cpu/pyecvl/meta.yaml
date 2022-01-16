@@ -12,14 +12,14 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
     - {{ compiler('cxx') }}
   host:
     - ecvl-cpu ==1.0.0
-    - eddl-cpu ==1.0.3b
+    - eddl-cpu ==1.0.4b
     - numpy
     - pip
     - pybind11 <2.6
@@ -27,7 +27,7 @@ requirements:
     - setuptools
   run:
     - ecvl-cpu ==1.0.0
-    - pyeddl-cpu ==1.1.0
+    - pyeddl-cpu ==1.2.0
     - numpy
     - python {{ py_ver }}
 

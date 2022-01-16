@@ -1,6 +1,6 @@
 {% set name = "eddl-gpu" %}
-{% set version = "v1.0.3b" %}
-{% set sha256 = "20ca1283ac81d8dd0424d3b849d5daacfae278542b32e5e27e8f91fb4b1286ce" %}
+{% set version = "v1.0.4b" %}
+{% set sha256 = "98cd1c9cc767469f5ea2bef7a2db58c7ad9bd7af6f8a72235fc1e1d8973438c2" %}
 
 package:
   name: {{ name|lower }}
