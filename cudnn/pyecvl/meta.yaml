@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -20,7 +20,7 @@ requirements:
   host:
     - cudatoolkit 10.1*
     - ecvl-cudnn ==1.0.0
-    - eddl-cudnn ==1.0.3b
+    - eddl-cudnn ==1.0.4b
     - numpy
     - pip
     - pybind11 <2.6
@@ -29,7 +29,7 @@ requirements:
   run:
     - {{ pin_compatible('cudatoolkit', max_pin='x.x') }}
     - ecvl-cudnn ==1.0.0
-    - pyeddl-cudnn ==1.1.0
+    - pyeddl-cudnn ==1.2.0
     - numpy
     - python {{ py_ver }}
 
