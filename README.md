@@ -94,7 +94,7 @@ conda install -y python=3.7 pyecvl-gpu
 When popular channels such as conda-forge and bioconda are involved,
 [installing packages can take a considerable amount of
 time](https://www.anaconda.com/blog/understanding-and-improving-condas-performance). One
-of the easiest way to get a huge speedup is to use
+of the easiest ways to get a huge speedup is to use
 [Mamba](https://mamba.readthedocs.io/en/latest/index.html). The `mamba`
 command can be used as a faster drop-in replacement for `conda`. For instance:
 
