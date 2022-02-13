@@ -32,7 +32,7 @@ for v in 3.6 3.7 3.8; do
     pushd "${examples_dir}"
     for n in "${names[@]}"; do
 	echo "  ${n}"
-	x86_64-conda-linux-gnu-g++ -DECVL_WITH_DICOM -DECVL_WITH_OPENSLIDE -I/opt/conda/envs/test${v}/include -I/opt/conda/envs/test${v}/include/eigen3 -L /opt/conda/envs/test${v}/lib ${n}.cpp -o ${n} -std=c++17 -lecvl_core -lecvl_eddl -leddl -ldataset -lopencv_core -lyaml-cpp -lopenslide -ldcmdata -ldcmimage -ldcmimgle -ldcmjpeg -li2d -lijg8 -lijg12 -lijg16 -loflog -lofstd -pthread
+	x86_64-conda-linux-gnu-g++ -DECVL_WITH_DICOM -DECVL_WITH_OPENSLIDE -I/opt/conda/envs/test${v}/include -I/opt/conda/envs/test${v}/include/eigen3 -I/opt/conda/envs/test${v}/include/openslide -L /opt/conda/envs/test${v}/lib ${n}.cpp -o ${n} -std=c++17 -lecvl_core -lecvl_eddl -leddl -ldataset -lopencv_core -lyaml-cpp -lopenslide -ldcmdata -ldcmimage -ldcmimgle -ldcmjpeg -li2d -lijg8 -lijg12 -lijg16 -loflog -lofstd -pthread
 	./${n}
 	rm -fv ${n}
     done
