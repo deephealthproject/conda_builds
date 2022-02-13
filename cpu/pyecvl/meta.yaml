@@ -1,6 +1,6 @@
 {% set name = "pyecvl-cpu" %}
-{% set version = "1.0.0" %}
-{% set sha256 = "a091c9f84e5f7fe98942290f84254cb0932bd6aec87d8cc360612cffcd19a222" %}
+{% set version = "1.1.0" %}
+{% set sha256 = "08c142f2b5ef725e1f09b3bb5dcb87648c6b352a559ce1c7af96d19e2f58b8e3" %}
 
 package:
   name: {{ name|lower }}
@@ -12,13 +12,13 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 0
 
 requirements:
   build:
     - {{ compiler('cxx') }}
   host:
-    - ecvl-cpu ==1.0.0
+    - ecvl-cpu ==1.0.1
     - eddl-cpu ==1.0.4b
     - numpy
     - pip
@@ -26,7 +26,7 @@ requirements:
     - python {{ py_ver }}
     - setuptools
   run:
-    - ecvl-cpu ==1.0.0
+    - ecvl-cpu ==1.0.1
     - pyeddl-cpu ==1.2.0
     - numpy
     - python {{ py_ver }}
