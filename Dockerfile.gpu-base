@@ -1,7 +1,7 @@
 FROM conda-cpu-base
 
 # required by the CUDA installer
-RUN apt-get update && apt-get install --no-install-recommends libxml2
+RUN apt-get -y update && apt-get -y install --no-install-recommends libxml2
 
 ENV CUDA_VERSION=11.3.1
 ENV NCCL_VERSION=2.9.9-1
