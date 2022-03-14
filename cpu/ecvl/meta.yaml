@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -25,7 +25,7 @@ requirements:
     - yaml-cpp ==0.6.3
     - openslide ==3.4.1
     - dcmtk ==3.6.5
-    - eddl-cpu ==1.0.4b
+    - eddl-cpu ==1.1b
     - python {{ py_ver }}
     - libnsl
   run:
@@ -33,7 +33,7 @@ requirements:
     - yaml-cpp ==0.6.3
     - openslide ==3.4.1
     - dcmtk ==3.6.5
-    - eddl-cpu ==1.0.4b
+    - eddl-cpu ==1.1b
     - python {{ py_ver }}
 
 

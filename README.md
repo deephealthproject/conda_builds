@@ -10,7 +10,7 @@
 * `*-gpu`: GPU-enabled
 * `*-cudnn`: GPU-enabled, with cuDNN support
 
-The GPU-enabled packages support CUDA 10.1 (like Tensorflow).
+The GPU-enabled packages support CUDA 11.3.
 
 Note that ECVL/PyECVL does not actually offer cuDNN support. The `cudnn` tag
 in this case simply means that the package pulls the corresponding

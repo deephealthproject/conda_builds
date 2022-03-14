@@ -1,6 +1,6 @@
 {% set name = "eddl-gpu" %}
-{% set version = "v1.0.4b" %}
-{% set sha256 = "98cd1c9cc767469f5ea2bef7a2db58c7ad9bd7af6f8a72235fc1e1d8973438c2" %}
+{% set version = "v1.1b" %}
+{% set sha256 = "b9fe2bdc63808ae8e1a8eec96f66106c49b7a5ce9ee32ffe17fd6cf9d1b2c4ec" %}
 
 package:
   name: {{ name|lower }}
@@ -21,12 +21,12 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - cudatoolkit-dev 10.1*
+    - cudatoolkit-dev ==11.3.1
     - eigen >=3.3.7,<3.3.8
     - zlib 1.2*
     - protobuf 3.11*
   run:
-    - cudatoolkit >=10.1,<10.2a0
+    - cudatoolkit ==11.3.1
     - {{ pin_compatible('eigen', max_pin='x.x') }}
     - {{ pin_compatible('zlib', max_pin='x.x') }}
     - {{ pin_compatible('protobuf', max_pin='x.x') }}

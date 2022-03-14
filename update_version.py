@@ -45,6 +45,7 @@ REQUIRED_BY = {
 _LATEST_VERSION = {}
 _CHECKSUM = {}
 
+
 def get_current_version(package, build_type="cpu"):
     path = Path(build_type) / package / "meta.yaml"
     with open(path, "rt") as f:
@@ -100,11 +101,21 @@ def update_meta_deps(path, package, build_type, version):
         f.write(content)
 
 
+def bump_number(path):
+    with open(path, "rt") as f:
+        s = f.read()
+    s = re.sub(r'number:\s*(\d+)', lambda m: f"number: {1+int(m.group(1))}", s)
+    with open(path, "wt") as f:
+        f.write(s)
+
+
 def main(args):
     token = os.getenv("GITHUB_API_TOKEN")
     gh = Github(token) if token else Github()
     packages = (args.package,) if args.package else ALL_PACKAGES
     build_types = (args.build_type,) if args.build_type else ALL_BUILD_TYPES
+    package_updated = {p: {t: False for t in build_types} for p in packages}
+    deps_updated = {p: {t: False for t in build_types} for p in packages}
     for p in packages:
         for t in build_types:
             current_version = get_current_version(p, t)
@@ -119,10 +130,18 @@ def main(args):
             path = Path(t) / p / "meta.yaml"
             print(f"updating {path}")
             update_meta(path, version, checksum)
+            package_updated[p][t] = True
             for r in REQUIRED_BY[p]:
                 rpath = Path(t) / r / "meta.yaml"
                 print(f"  updating deps in {rpath}")
                 update_meta_deps(rpath, p, t, version)
+                deps_updated[r][t] = True
+    for p in packages:
+        for t in build_types:
+            if deps_updated[p][t] and not package_updated[p][t]:
+                path = Path(t) / p / "meta.yaml"
+                print(f"bumping build number in {path}")
+                bump_number(path)
 
 
 if __name__ == "__main__":
