@@ -28,7 +28,7 @@ for v in 3.6 3.7 3.8; do
     echo "*** testing ${v} ***"
     conda create -y -n test${v}
     conda activate test${v}
-    conda install -y "${dhealth_args[@]}" ecvl-cudnn python=${v} gxx_linux-64=8
+    conda install -y "${dhealth_args[@]}" ecvl-cudnn python=${v} gxx_linux-64=8 sysroot_linux-64=2.17
     pushd "${examples_dir}"
     for n in "${names[@]}"; do
 	echo "  ${n}"
