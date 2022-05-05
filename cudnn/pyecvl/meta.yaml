@@ -1,6 +1,6 @@
 {% set name = "pyecvl-cudnn" %}
-{% set version = "1.2.0" %}
-{% set sha256 = "d6dfc6376a65bf5d661c1f9f53bf37e2ce6f8b615b0baf2f9d092f6a23e4b73c" %}
+{% set version = "1.3.0" %}
+{% set sha256 = "31e2e0a492b717bd6a3c2d271bd38a1e1089f1caf85abd62aca517b5e76b6836" %}
 
 package:
   name: {{ name|lower }}
@@ -12,14 +12,14 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 1
+  number: 0
 
 requirements:
   build:
     - {{ compiler('cxx') }}
   host:
     - cudatoolkit ==11.3.1
-    - ecvl-cudnn ==1.0.2
+    - ecvl-cudnn ==1.0.3
     - eddl-cudnn ==1.1b
     - numpy
     - pip
@@ -28,7 +28,7 @@ requirements:
     - setuptools
   run:
     - cudatoolkit ==11.3.1
-    - ecvl-cudnn ==1.0.2
+    - ecvl-cudnn ==1.0.3
     - pyeddl-cudnn ==1.3.0
     - numpy
     - python {{ py_ver }}
