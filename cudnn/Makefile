@@ -7,6 +7,7 @@ GPU_OPTS ?= "-e NVIDIA_VISIBLE_DEVICES=$(DEVICE)"
 # base images
 conda-base: ../Dockerfile.cudnn-base
 	docker build -t conda-cpu-base -f ../Dockerfile.cpu-base .
+	docker build -t conda-gpu-base -f ../Dockerfile.gpu-base .
 	docker build -t conda-cudnn-base -f $< .
 
 conda-upload: ../Dockerfile.upload
