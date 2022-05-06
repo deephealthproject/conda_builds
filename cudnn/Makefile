@@ -72,10 +72,10 @@ clean-pyeddl:
 
 # pyecvl
 pyecvl-conda: Dockerfile.pyecvl conda-base
-	docker build -t pyecvl-conda-cudnn -t pyecvl-conda -f $< .
+	docker build -t pyecvl-conda-cudnn -f $< .
 
 pyecvl-conda-test: Dockerfile.pyecvl-test pyecvl-conda
-	docker build -t pyecvl-conda-test -t pyecvl-conda-cudnn-test -f $< ..
+	docker build -t pyecvl-conda-cudnn-test -f $< ..
 
 test-pyecvl: test_pyecvl.sh pyecvl-conda-test
 	docker run --rm $(GPU_OPTS) -v ${PWD}:${PWD}:ro pyecvl-conda-cudnn-test bash ${PWD}/$<
