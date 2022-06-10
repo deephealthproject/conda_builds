@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:
@@ -27,7 +27,7 @@ requirements:
     - setuptools
   run:
     - ecvl-cpu ==1.0.3
-    - pyeddl-cpu ==1.3.0
+    - pyeddl-cpu ==1.3.1
     - numpy
     - python {{ py_ver }}
 
